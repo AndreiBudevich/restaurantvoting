@@ -1,16 +1,31 @@
 package by.restaurantvoting.to;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.Value;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class RestaurantTo extends NamedTo {
 
+    @NotBlank
+    @Size(min = 2, max = 120)
+    String address;
+
+    @NotBlank
+    @Size(min = 2, max = 120)
+    String contacts;
+
     int numberVoices;
 
-    public RestaurantTo(Integer id, String name, int numberVoices) {
+    public RestaurantTo(Integer id, String name, String address, String contacts, int numberVoices) {
         super(id, name);
+        this.address = address;
+        this.contacts = contacts;
         this.numberVoices = numberVoices;
     }
 }
