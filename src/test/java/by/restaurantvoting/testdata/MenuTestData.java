@@ -4,10 +4,11 @@ import by.restaurantvoting.model.Menu;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.List;
+import java.util.Set;
 
 import static by.restaurantvoting.testdata.DishTestData.*;
-import static by.restaurantvoting.testdata.RestaurantTestData.*;
+import static by.restaurantvoting.testdata.RestaurantTestData.restaurant0;
+import static by.restaurantvoting.testdata.RestaurantTestData.restaurant1;
 import static java.time.LocalDate.now;
 import static java.time.LocalDate.of;
 
@@ -24,16 +25,17 @@ public class MenuTestData {
 
     public static final int RESTAURANT2_MENU_ID_0 = RESTAURANT1_MENU_ID_1 + 1;
 
-    public static final Menu restaurant0Menu0 = new Menu(RESTAURANT0_MENU_ID_0,
-            TEST_DATE_0, restaurant0, List.of(dish0, dish1, dish3));
-    public static final Menu restaurant0Menu1 = new Menu(RESTAURANT0_MENU_ID_1,
-            TODAY, restaurant0, List.of(dish0, dish2, dish4));
+    public static final Menu restaurant0Menu0 = new Menu(RESTAURANT0_MENU_ID_0, TEST_DATE_0, restaurant0);
+    public static final Menu restaurant0Menu1 = new Menu(RESTAURANT0_MENU_ID_1, TODAY, restaurant0);
+    public static final Menu restaurant1Menu0 = new Menu(RESTAURANT1_MENU_ID_0, TEST_DATE_0, restaurant1);
+    public static final Menu restaurant1Menu1 = new Menu(RESTAURANT1_MENU_ID_1, TODAY, restaurant1);
+    public static final Menu restaurant2Menu0 = new Menu(RESTAURANT2_MENU_ID_0, TODAY, restaurant1);
 
-    public static final Menu restaurant1Menu0 = new Menu(RESTAURANT1_MENU_ID_0,
-            TEST_DATE_0, restaurant1, List.of(dish5, dish6));
-    public static final Menu restaurant1Menu1 = new Menu(RESTAURANT1_MENU_ID_1,
-            TODAY, restaurant1, List.of(dish5, dish7, dish8, dish9));
-
-    public static final Menu restaurant2Menu0 = new Menu(RESTAURANT2_MENU_ID_0,
-            TODAY, restaurant1, List.of(dish10, dish10, dish12));
+    static {
+        restaurant0Menu0.setDishes(Set.of(dish0, dish1, dish3));
+        restaurant0Menu1.setDishes(Set.of(dish0, dish2, dish4));
+        restaurant1Menu0.setDishes(Set.of(dish5, dish6));
+        restaurant1Menu1.setDishes(Set.of(dish5, dish7, dish8, dish9));
+        restaurant2Menu0.setDishes(Set.of(dish10, dish11, dish12));
+    }
 }
