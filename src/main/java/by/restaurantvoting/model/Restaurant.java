@@ -3,10 +3,9 @@ package by.restaurantvoting.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Set;
 
@@ -16,9 +15,15 @@ import java.util.Set;
 @Table(name = "restaurant")
 public class Restaurant extends NamedEntity {
 
-    String address;
+    @Column(name = "address", nullable = false)
+    @NotBlank
+    @Size(min = 2, max = 120)
+    private String address;
 
-    String contacts;
+    @Column(name = "contacts", nullable = false)
+    @NotBlank
+    @Size(min = 2, max = 120)
+    private String contacts;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     private Set<Menu> menus;
