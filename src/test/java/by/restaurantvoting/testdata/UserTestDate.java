@@ -3,11 +3,9 @@ package by.restaurantvoting.testdata;
 import by.restaurantvoting.model.Role;
 import by.restaurantvoting.model.User;
 
-import static by.restaurantvoting.testdata.RestaurantTestData.START_SEQ;
-
 public class UserTestDate {
 
-    public static final int USER0_ID = START_SEQ + 23;
+    public static final int USER0_ID = 1;
     public static final int USER1_ID = USER0_ID + 1;
     public static final int USER2_ID = USER1_ID + 1;
     public static final int USER3_ID = USER2_ID + 1;

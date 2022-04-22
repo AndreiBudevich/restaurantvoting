@@ -7,7 +7,7 @@ import static by.restaurantvoting.testdata.RestaurantTestData.*;
 
 public class DishTestData {
 
-    public static final int DISH_ID_0 = START_SEQ + 5;
+    public static final int DISH_ID_0 = 1;
     public static final int DISH_ID_1 = DISH_ID_0 + 1;
     public static final int DISH_ID_2 = DISH_ID_1 + 1;
     public static final int DISH_ID_3 = DISH_ID_2 + 1;

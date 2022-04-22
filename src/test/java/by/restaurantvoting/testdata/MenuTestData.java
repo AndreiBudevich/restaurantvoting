@@ -16,7 +16,7 @@ public class MenuTestData {
     private static final LocalDate TODAY = now();
     private static final LocalDate TEST_DATE_0 = of(2022, Month.MARCH, 1);
 
-    public static final int RESTAURANT0_MENU_ID_0 = START_SEQ + 19;
+    public static final int RESTAURANT0_MENU_ID_0 = 1;
     public static final int RESTAURANT0_MENU_ID_1 = RESTAURANT0_MENU_ID_0 + 1;
 
     public static final int RESTAURANT1_MENU_ID_0 = RESTAURANT0_MENU_ID_1 + 1;

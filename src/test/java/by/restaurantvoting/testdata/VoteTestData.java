@@ -5,7 +5,6 @@ import by.restaurantvoting.model.Vote;
 import java.time.LocalDate;
 import java.time.Month;
 
-import static by.restaurantvoting.testdata.RestaurantTestData.START_SEQ;
 import static by.restaurantvoting.testdata.UserTestDate.*;
 import static java.time.LocalDate.now;
 import static java.time.LocalDate.of;
@@ -15,7 +14,7 @@ public class VoteTestData {
     private static final LocalDate TODAY = now();
     private static final LocalDate TEST_DATE_0 = of(2022, Month.MARCH, 1);
 
-    public static final int VOTE0_ID = START_SEQ + 37;
+    public static final int VOTE0_ID = 1;
     public static final int VOTE1_ID = VOTE0_ID + 1;
     public static final int VOTE2_ID = VOTE1_ID + 1;
     public static final int VOTE3_ID = VOTE2_ID + 1;
