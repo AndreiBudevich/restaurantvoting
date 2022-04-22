@@ -19,10 +19,8 @@ public class MenuTestData {
 
     public static final int RESTAURANT0_MENU_ID_0 = 1;
     public static final int RESTAURANT0_MENU_ID_1 = RESTAURANT0_MENU_ID_0 + 1;
-
     public static final int RESTAURANT1_MENU_ID_0 = RESTAURANT0_MENU_ID_1 + 1;
     public static final int RESTAURANT1_MENU_ID_1 = RESTAURANT1_MENU_ID_0 + 1;
-
     public static final int RESTAURANT2_MENU_ID_0 = RESTAURANT1_MENU_ID_1 + 1;
 
     public static final Menu restaurant0Menu0 = new Menu(RESTAURANT0_MENU_ID_0, TEST_DATE_0, restaurant0);

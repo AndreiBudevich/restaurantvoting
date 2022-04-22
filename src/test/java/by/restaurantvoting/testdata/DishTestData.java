@@ -68,7 +68,7 @@ public class DishTestData {
 
     public static final Dish dish13 = new Dish(DISH_ID_13, "Еда не в меню",
             "без описания",
-            290, 105, restaurant1);
+            290, 105, restaurant0);
 
     static {
         dish0.setMenus(Set.of(restaurant0Menu0, restaurant0Menu1));
