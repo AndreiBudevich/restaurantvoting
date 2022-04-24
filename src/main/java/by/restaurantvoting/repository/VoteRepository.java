@@ -14,5 +14,5 @@ public interface VoteRepository extends BaseRepository<Vote> {
     Vote getByDateUserId(int userId, LocalDate date);
 
     @Query("SELECT v FROM Vote v  JOIN FETCH v.restaurant WHERE v.user.id = ?1")
-    List<Vote> getAllUserId(int userId);
+    List<Vote> getAllByUserId(int userId);
 }
