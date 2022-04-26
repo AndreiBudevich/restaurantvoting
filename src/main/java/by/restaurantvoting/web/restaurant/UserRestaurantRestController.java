@@ -23,7 +23,7 @@ import static by.restaurantvoting.util.DateTimeUtil.*;
 @RequestMapping(value = UserRestaurantRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserRestaurantRestController extends AbstractRestaurantRestController {
 
-    protected static final String REST_URL = "api/rest/user/restaurants";
+    protected static final String REST_URL = "/api/rest/user/restaurants";
 
     @Autowired
     VoteRepository voteRepository;

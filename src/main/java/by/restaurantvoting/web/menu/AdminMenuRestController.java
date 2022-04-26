@@ -26,7 +26,7 @@ import static by.restaurantvoting.util.MenuUtil.checkForPossibilityOfChange;
 @RequestMapping(value = AdminMenuRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminMenuRestController extends AbstractMenuRestController {
 
-    static final String REST_URL = "api/rest/admin/{restaurantId}/menus";
+    static final String REST_URL = "/api/rest/admin/{restaurantId}/menus";
 
     @Autowired
     RestaurantRepository restaurantRepository;

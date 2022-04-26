@@ -20,7 +20,7 @@ public class UserVoteRestController {
     @Autowired
     VoteRepository voteRepository;
 
-    protected static final String REST_URL = "api/rest/user/votes";
+    protected static final String REST_URL = "/api/rest/user/votes";
 
     @GetMapping
     public List<Vote> getAllByUserId() {
