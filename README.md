@@ -1,6 +1,6 @@
-## Java Enterprise Top restaurant 
+## Java Enterprise Restaurant Voting 
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/169fc2bf8a7e486aa6d30625f97f7810)](https://www.codacy.com/gh/AndreiBudevich/toprestaurant/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AndreiBudevich/toprestaurant&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/e9202d586ac04c6481a15f031e957641)](https://www.codacy.com/gh/AndreiBudevich/restaurantvoting/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AndreiBudevich/restaurantvoting&amp;utm_campaign=Badge_Grade)
 
 -----------------------------
 
