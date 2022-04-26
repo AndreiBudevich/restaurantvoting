@@ -26,7 +26,7 @@ import static by.restaurantvoting.util.validation.ValidationUtil.checkNew;
 @CacheConfig(cacheNames = "users")
 public class AdminUserController extends AbstractUserController {
 
-    static final String REST_URL = "/api/admin/users";
+    static final String REST_URL = "/api/rest/admin/users";
 
     @Override
     @GetMapping("/{id}")
