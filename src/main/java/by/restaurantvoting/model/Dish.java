@@ -47,11 +47,10 @@ public class Dish extends NamedEntity {
     public Dish() {
     }
 
-    public Dish(Integer id, String name, String description, int weight, int price, Restaurant restaurant) {
+    public Dish(Integer id, String name, String description, int weight, int price) {
         super(id, name);
         this.description = description;
         this.weight = weight;
         this.price = price;
-        this.restaurant = restaurant;
     }
 }
