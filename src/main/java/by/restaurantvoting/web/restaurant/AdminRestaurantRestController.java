@@ -21,9 +21,9 @@ import java.util.List;
 @RequestMapping(value = AdminRestaurantRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminRestaurantRestController extends AbstractRestaurantRestController {
 
-    protected static final String REST_URL = "/api/rest/admin/restaurants";
+    static final String REST_URL = "/api/rest/admin/restaurants";
 
-    protected static final Sort SORT_NAME = Sort.by(Sort.Direction.ASC, "name");
+    private static final Sort SORT_NAME = Sort.by(Sort.Direction.ASC, "name");
 
     @GetMapping
     public List<Restaurant> getAll() {
@@ -38,9 +38,9 @@ public class AdminRestaurantRestController extends AbstractRestaurantRestControl
     }
 
     @GetMapping("/{id}")
-    public Restaurant get(@PathVariable int id) {
+    public ResponseEntity <Restaurant> get(@PathVariable int id) {
         log.info("get restaurant {}", id);
-        return restaurantRepository.findById(id).orElse(null);
+        return ResponseEntity.of(restaurantRepository.findById(id));
     }
 
     @DeleteMapping("/{id}")
