@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 @ActiveProfiles("test")
 public abstract class AbstractControllerTest {
 
+    public static final int NOT_FOUND = 404;
+
     @Autowired
     private MockMvc mockMvc;
 
