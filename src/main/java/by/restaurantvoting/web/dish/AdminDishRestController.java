@@ -29,20 +29,23 @@ public class AdminDishRestController {
     RestaurantRepository restaurantRepository;
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable int restaurantId, @PathVariable int id) {
-        Dish dish = dishRepository.getWithMenu(id);
-        if (dish != null && dish.getMenus().isEmpty()) {
-            dishRepository.deleteExisted(id);
-            log.info("delete dish {} for restaurant {}", id, restaurantId);
-            return new ResponseEntity<>("DELETE", HttpStatus.OK);
-        }
-        return new ResponseEntity<>("NOT DELETE", HttpStatus.OK);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int restaurantId, @PathVariable int id) {
+        dishRepository.deleteExisted(id);
+        log.info("delete dish {} for restaurant {}", id, restaurantId);
     }
 
     @GetMapping("/{id}")
-    public Dish get(@PathVariable int restaurantId, @PathVariable int id) {
+    public ResponseEntity<Dish> get(@PathVariable int restaurantId, @PathVariable int id) {
         log.info("get dish {} for restaurant {}", id, restaurantId);
-        return dishRepository.findById(id).orElse(null);
+        return ResponseEntity.of(dishRepository.findById(id));
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@PathVariable int restaurantId, @RequestBody Dish dish, @PathVariable int id) {
+        log.info("update dish {} for restaurant {}", id, restaurantId);
+        dishRepository.save(dish);
     }
 
     @GetMapping
