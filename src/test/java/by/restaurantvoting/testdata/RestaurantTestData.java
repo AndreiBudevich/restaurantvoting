@@ -15,7 +15,6 @@ public class RestaurantTestData {
     public static final int RESTAURANT_ID_1 = RESTAURANT_ID_0 + 1;
     public static final int RESTAURANT_ID_2 = RESTAURANT_ID_1 + 1;
     public static final int RESTAURANT_ID_3 = RESTAURANT_ID_2 + 1;
-    public static final int NOT_FOUND = 404;
 
     public static final Restaurant restaurant0 = new Restaurant(
             RESTAURANT_ID_0, "Ваcильки", "г. Минск ул. тимирязева 67", "8-029-7634349");
