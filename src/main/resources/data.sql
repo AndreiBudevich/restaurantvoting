@@ -10,7 +10,7 @@ VALUES ('User0', 'user0@yandex.ru', '{noop}password0'),
        ('User8', 'user8@yandex.ru', '{noop}password8'),
        ('User9', 'user9@yandex.ru', '{noop}password9'),
        ('User10', 'user10@yandex.ru', '{noop}password10'),
-       ('User11 без голосования11', 'user11@yandex.ru', '{noop}password11'),
+       ('User11 без голосования', 'user11@yandex.ru', '{noop}password11'),
        ('Admin', 'admin@gmail.com', '{noop}admin');
 
 INSERT INTO USER_ROLES (role, user_id)
