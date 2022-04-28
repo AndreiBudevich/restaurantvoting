@@ -18,15 +18,15 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+import static by.restaurantvoting.util.DateTimeUtil.*;
 import static by.restaurantvoting.util.DishUtil.getTos;
-import static by.restaurantvoting.util.MenuUtil.checkForPossibilityOfChange;
 
 @RestController
 @Slf4j
 @RequestMapping(value = AdminMenuRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminMenuRestController extends AbstractMenuRestController {
 
-    static final String REST_URL = "/api/rest/admin/{restaurantId}/menus";
+    static final String REST_URL = "/api/admin/{restaurantId}/menus";
 
     @Autowired
     RestaurantRepository restaurantRepository;
@@ -36,7 +36,7 @@ public class AdminMenuRestController extends AbstractMenuRestController {
 
     @Override
     @GetMapping("/{id}")
-    public List<Dish> get(@PathVariable int restaurantId, @PathVariable int id) {
+    public ResponseEntity<List<Dish>> get(@PathVariable int restaurantId, @PathVariable int id) {
         return super.get(restaurantId, id);
     }
 
@@ -49,12 +49,17 @@ public class AdminMenuRestController extends AbstractMenuRestController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable int restaurantId, @PathVariable int id) {
         Menu menu = menuRepository.findById(id).orElse(null);
-        if (checkForPossibilityOfChange(menu)) {
-            menuRepository.deleteExisted(id);
-            log.info("delete menu {} for restaurant {}", id, restaurantId);
-            return new ResponseEntity<>("DELETE", HttpStatus.OK);
+        if (menu == null) {
+            log.info("didn't delete menu {} for restaurant {} as menu not found", id, restaurantId);
+            return new ResponseEntity<>("NOT FOUND", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>("NOT DELETE", HttpStatus.OK);
+        if (menu.getDate().isEqual(getToday()) && getCurrentTime().isAfter(DEADLINE_DELETE_TODAY_MENU)) {
+            log.info("didn't delete menu {} for restaurant {}", id, restaurantId);
+            return new ResponseEntity<>("NOT DELETE", HttpStatus.NO_CONTENT);
+        }
+        menuRepository.deleteExisted(id);
+        log.info("delete menu {} for restaurant {}", id, restaurantId);
+        return new ResponseEntity<>("DELETE", HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{menuId}/edit")
@@ -65,22 +70,18 @@ public class AdminMenuRestController extends AbstractMenuRestController {
 
     @PutMapping(value = "/{menuId}/edit/{id}")
     @Transactional
-    public ResponseEntity<String> setOrDeleteDishInCurrentMenu(
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void setOrDeleteDishInCurrentMenu(
             @PathVariable int restaurantId, @PathVariable int menuId, @PathVariable int id) {
         Menu menu = menuRepository.getWithDishes(menuId);
-        if (checkForPossibilityOfChange(menu)) {
-            Dish dish = dishRepository.getOne(id);
-            if (menu.getDishes().contains(dish)) {
-                menu.getDishes().remove(dish);
-                log.info("remove {} dish from menu {} for restaurant {}", id, menuId, restaurantId);
-                return new ResponseEntity<>("DISH DELETE", HttpStatus.OK);
-            } else {
-                menu.setDish(dish);
-                log.info("add {} dish to menu {} for restaurant {}", id, menuId, restaurantId);
-                return new ResponseEntity<>("DISH ADD", HttpStatus.OK);
-            }
+        Dish dish = dishRepository.getOne(id);
+        if (menu.getDishes().contains(dish)) {
+            menu.getDishes().remove(dish);
+            log.info("remove {} dish from menu {} for restaurant {}", id, menuId, restaurantId);
+        } else {
+            menu.setDish(dish);
+            log.info("add {} dish to menu {} for restaurant {}", id, menuId, restaurantId);
         }
-        return new ResponseEntity<>("NOT CHANGED", HttpStatus.OK);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

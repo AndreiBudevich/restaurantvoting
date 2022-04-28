@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping(value = AdminDishRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminDishRestController {
 
-    static final String REST_URL = "/api/rest/admin/{restaurantId}/dishes";
+    static final String REST_URL = "/api/admin/{restaurantId}/dishes";
 
     @Autowired
     DishRepository dishRepository;

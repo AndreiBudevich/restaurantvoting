@@ -23,7 +23,7 @@ import static by.restaurantvoting.util.DateTimeUtil.*;
 @RequestMapping(value = UserRestaurantRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserRestaurantRestController extends AbstractRestaurantRestController {
 
-    protected static final String REST_URL = "/api/rest/user/restaurants";
+    protected static final String REST_URL = "/api/user/restaurants";
 
     @Autowired
     VoteRepository voteRepository;
@@ -33,7 +33,7 @@ public class UserRestaurantRestController extends AbstractRestaurantRestControll
 
     @GetMapping
     public List<Restaurant> getAll() {
-        return restaurantRepository.getAllWithMenu(TODAY);
+        return restaurantRepository.getAllWithMenu(getToday());
     }
 
     @PutMapping("/{restaurantId}")
@@ -41,11 +41,11 @@ public class UserRestaurantRestController extends AbstractRestaurantRestControll
     public ResponseEntity<String> setOrDeleteTodayUserVote(@PathVariable int restaurantId) {
         String message = "DID NOT SET";
         int userId = SecurityUtil.authId();
-        if (NOW.isBefore(DEADLINE_CHANGES_VOTE)) {
-            Vote vote = voteRepository.getByDateUserId(userId, LocalDate.now());
+        if (getCurrentTime().isBefore(DEADLINE_CHANGES_VOTE)) {
+            Vote vote = voteRepository.getByDateUserId(userId, getToday());
             Restaurant restaurant = restaurantRepository.getOne(restaurantId);
             if (vote == null) {
-                vote = new Vote(LocalDate.now(), userRepository.getOne(userId));
+                vote = new Vote(getToday(), userRepository.getOne(userId));
             }
             if (vote.getRestaurant() == null) {
                 vote.setRestaurant(restaurant);
