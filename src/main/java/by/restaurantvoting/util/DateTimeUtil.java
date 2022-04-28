@@ -5,11 +5,15 @@ import java.time.LocalTime;
 
 public class DateTimeUtil {
 
-    public static final LocalDate TODAY = LocalDate.now();
+    public static LocalTime getCurrentTime() {
+        return LocalTime.now();
+    }
 
-    public static final LocalTime NOW = LocalTime.now();
+    public static LocalDate getToday() {
+        return LocalDate.now();
+    }
 
-    public static final LocalTime DEADLINE_CHANGES_MENU = LocalTime.of(7, 0);
+    public static final LocalTime DEADLINE_DELETE_TODAY_MENU = LocalTime.of(8, 0);
 
     public static final LocalTime DEADLINE_CHANGES_VOTE = LocalTime.of(11, 0);
 }
