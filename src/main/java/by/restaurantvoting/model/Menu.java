@@ -34,6 +34,7 @@ public class Menu extends BaseEntity {
     public void setDish(Dish dish) {
         if (CollectionUtils.isEmpty(dishes)) {
             this.dishes = new HashSet<>();
+            this.dishes.add(dish);
         } else {
             this.dishes.add(dish);
         }
@@ -42,9 +43,8 @@ public class Menu extends BaseEntity {
     public Menu() {
     }
 
-    public Menu(Integer id, LocalDate date, Restaurant restaurant) {
+    public Menu(Integer id, LocalDate date) {
         super(id);
         this.date = date;
-        this.restaurant = restaurant;
     }
 }
