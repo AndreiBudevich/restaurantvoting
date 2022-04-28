@@ -1,39 +1,29 @@
 package by.restaurantvoting.testdata;
 
+import by.restaurantvoting.MatcherFactory;
 import by.restaurantvoting.model.Menu;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.Set;
-
-import static by.restaurantvoting.testdata.DishTestData.*;
-import static by.restaurantvoting.testdata.RestaurantTestData.restaurant0;
-import static by.restaurantvoting.testdata.RestaurantTestData.restaurant1;
-import static java.time.LocalDate.now;
-import static java.time.LocalDate.of;
+import static by.restaurantvoting.util.DateTimeUtil.getToday;
 
 public class MenuTestData {
 
-    private static final LocalDate TODAY = now();
-    private static final LocalDate TEST_DATE_0 = of(2022, Month.MARCH, 1);
+    public static final MatcherFactory.Matcher<Menu> MENU_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Menu.class, "restaurant", "dishes");
 
     public static final int RESTAURANT0_MENU_ID_0 = 1;
     public static final int RESTAURANT0_MENU_ID_1 = RESTAURANT0_MENU_ID_0 + 1;
-    public static final int RESTAURANT1_MENU_ID_0 = RESTAURANT0_MENU_ID_1 + 1;
-    public static final int RESTAURANT1_MENU_ID_1 = RESTAURANT1_MENU_ID_0 + 1;
-    public static final int RESTAURANT2_MENU_ID_0 = RESTAURANT1_MENU_ID_1 + 1;
+    public static final int RESTAURANT0_MENU_ID_2 = RESTAURANT0_MENU_ID_1 + 1;
+    public static final int RESTAURANT0_MENU_ID_3 = RESTAURANT0_MENU_ID_2 + 1;
+    public static final int RESTAURANT0_MENU_ID_4 = RESTAURANT0_MENU_ID_3 + 1;
+    public static final int RESTAURANT0_MENU_ID_5 = RESTAURANT0_MENU_ID_4 + 1;
 
-    public static final Menu restaurant0Menu0 = new Menu(RESTAURANT0_MENU_ID_0, TEST_DATE_0, restaurant0);
-    public static final Menu restaurant0Menu1 = new Menu(RESTAURANT0_MENU_ID_1, TODAY, restaurant0);
-    public static final Menu restaurant1Menu0 = new Menu(RESTAURANT1_MENU_ID_0, TEST_DATE_0, restaurant1);
-    public static final Menu restaurant1Menu1 = new Menu(RESTAURANT1_MENU_ID_1, TODAY, restaurant1);
-    public static final Menu restaurant2Menu0 = new Menu(RESTAURANT2_MENU_ID_0, TODAY, restaurant1);
+    public static final Menu restaurant0Menu0 = new Menu(RESTAURANT0_MENU_ID_0, getToday().minusDays(1));
+    public static final Menu restaurant0Menu1 = new Menu(RESTAURANT0_MENU_ID_1, getToday());
+    public static final Menu restaurant0Menu2 = new Menu(RESTAURANT0_MENU_ID_2, getToday().plusDays(1));
+    public static final Menu restaurant0Menu3 = new Menu(RESTAURANT0_MENU_ID_3, getToday().plusDays(2));
+    public static final Menu restaurant0Menu4 = new Menu(RESTAURANT0_MENU_ID_4, getToday().plusDays(3));
+    public static final Menu restaurant0Menu5 = new Menu(RESTAURANT0_MENU_ID_5, getToday().plusDays(4));
 
-    static {
-        restaurant0Menu0.setDishes(Set.of(dish0, dish1, dish3));
-        restaurant0Menu1.setDishes(Set.of(dish0, dish2, dish4));
-        restaurant1Menu0.setDishes(Set.of(dish5, dish6));
-        restaurant1Menu1.setDishes(Set.of(dish5, dish7, dish8, dish9));
-        restaurant2Menu0.setDishes(Set.of(dish10, dish11, dish12));
+    public static Menu getNew() {
+        return new Menu(null, getToday().plusDays(5));
     }
 }
