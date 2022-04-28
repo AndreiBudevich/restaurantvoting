@@ -3,6 +3,7 @@ package by.restaurantvoting.web.menu;
 import by.restaurantvoting.model.Dish;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ public class UserMenuRestController extends AbstractMenuRestController {
 
     @Override
     @GetMapping("/{id}")
-    public List<Dish> get(@PathVariable int restaurantId, @PathVariable int id) {
+    public ResponseEntity<List<Dish>> get(@PathVariable int restaurantId, @PathVariable int id) {
         return super.get(restaurantId, id);
     }
 }
