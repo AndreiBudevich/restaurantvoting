@@ -2,6 +2,9 @@ package by.restaurantvoting.testdata;
 
 import by.restaurantvoting.MatcherFactory;
 import by.restaurantvoting.model.Dish;
+import by.restaurantvoting.to.DishTo;
+
+import java.util.List;
 
 public class DishTestData {
 
@@ -11,16 +14,9 @@ public class DishTestData {
     public static final int DISH_ID_3 = DISH_ID_2 + 1;
     public static final int DISH_ID_4 = DISH_ID_3 + 1;
     public static final int DISH_ID_5 = DISH_ID_4 + 1;
-    public static final int DISH_ID_6 = DISH_ID_5 + 1;
-    public static final int DISH_ID_7 = DISH_ID_6 + 1;
-    public static final int DISH_ID_8 = DISH_ID_7 + 1;
-    public static final int DISH_ID_9 = DISH_ID_8 + 1;
-    public static final int DISH_ID_10 = DISH_ID_9 + 1;
-    public static final int DISH_ID_11 = DISH_ID_10 + 1;
-    public static final int DISH_ID_12 = DISH_ID_11 + 1;
-    public static final int DISH_ID_13 = DISH_ID_12 + 1;
 
     public static final MatcherFactory.Matcher<Dish> DISH_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Dish.class, "restaurant", "menus");
+    public static final MatcherFactory.Matcher<DishTo> DISH_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(DishTo.class);
 
     public static final Dish dish0 = new Dish(DISH_ID_0, "Мачанка с драниками",
             "драники, куриное филе, ветчина, морковь, лук, шампиньоны, сливочный соус с укропом",
@@ -37,35 +33,10 @@ public class DishTestData {
     public static final Dish dish4 = new Dish(DISH_ID_4, "Биточки с грибным соусом",
             "биточки из свинины, подаются со сливочным соусом с шампиньонами, помидорами и зеленью, картофельное пюре",
             335, 75);
-
-    public static final Dish dish5 = new Dish(DISH_ID_5, "Пицца Народная",
-            "соус из протертых томатов, Моцарелла, ветчина, шампиньоны, маринованные огурцы, приправа к пицце, масло чесночное",
-            290, 67);
-    public static final Dish dish6 = new Dish(DISH_ID_6, "Пицца Пикантная",
-            "соус из протертых томатов, Моцарелла, курица, ананасы, приправа к пицце, масло чесночное",
-            290, 67);
-    public static final Dish dish7 = new Dish(DISH_ID_7, "Пицца Повседневная",
-            "соус из протертых томатов, Моцарелла, салями, помидоры, приправа к пицце, масло чесночное",
-            290, 67);
-    public static final Dish dish8 = new Dish(DISH_ID_8, "Драники с жареной грудинкой и беконом",
-            "подаются с жареной грудинкой, беконом и луком, сметаной, маринованными огурцами и зеленью",
-            290, 103);
-    public static final Dish dish9 = new Dish(DISH_ID_9, "Салат с курицей и помидорами",
-            "листья салата, морковь, куриное филе, помидоры, огурцы, заправка для салата",
+    public static final Dish dish5 = new Dish(DISH_ID_5, "Еда не в меню", "без описания",
             290, 105);
 
-    public static final Dish dish10 = new Dish(DISH_ID_10, "Тальята из говядины с вялеными томатами",
-            "овядина на подушке из зелени",
-            340, 133);
-    public static final Dish dish11 = new Dish(DISH_ID_11, "Тартар из говядины",
-            "кубики говядины, сырой перепелиный желток, красный лук, каперсы, маринованный огурец",
-            250, 150);
-    public static final Dish dish12 = new Dish(DISH_ID_12, "Суп кюфта-бозбаш",
-            "ароматное сытное блюдо с тефтелей из баранины, нутом, рисом, картофелем и пряными травами",
-            150, 100);
-
-    public static final Dish dish13 = new Dish(DISH_ID_13, "Еда не в меню", "без описания",
-            290, 105);
+    public static List<Dish> dishesByRestaurant0 = List.of(dish0, dish1, dish2, dish3, dish4, dish5);
 
     public static Dish getNew() {
         return new Dish(null, "New", "New description", 200, 100);
