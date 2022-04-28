@@ -65,16 +65,16 @@ public class AdminDishRestControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(DISH_MATCHER.contentJson(dish4, dish13, dish2, dish0, dish3, dish1));
+                .andExpect(DISH_MATCHER.contentJson(dish4, dish5, dish2, dish0, dish3, dish1));
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + DISH_ID_13))
+        perform(MockMvcRequestBuilders.delete(REST_URL + DISH_ID_5))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertFalse(dishRepository.findById(DISH_ID_13).isPresent());
+        assertFalse(dishRepository.findById(DISH_ID_5).isPresent());
     }
 
     @Test
