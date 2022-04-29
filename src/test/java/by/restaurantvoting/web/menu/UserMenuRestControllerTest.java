@@ -39,5 +39,4 @@ class UserMenuRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
-
 }
