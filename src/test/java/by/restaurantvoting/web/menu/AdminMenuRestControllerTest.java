@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class AdminMenuRestControllerTest extends AbstractControllerTest {
+class AdminMenuRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = AdminMenuRestController.REST_URL.replace("{restaurantId}", "1") + '/';
 

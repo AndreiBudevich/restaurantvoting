@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class UserMenuRestControllerTest extends AbstractControllerTest {
+class UserMenuRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = UserMenuRestController.REST_URL.replace("{restaurantId}", "1") + '/';
 

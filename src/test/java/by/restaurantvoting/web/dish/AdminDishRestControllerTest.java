@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class AdminDishRestControllerTest extends AbstractControllerTest {
+class AdminDishRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = AdminDishRestController.REST_URL.replace("{restaurantId}", "1") + '/';
 
