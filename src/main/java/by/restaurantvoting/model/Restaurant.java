@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name = "restaurant")
+@Table(name = "restaurant", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"}, name = "id_name_idx")})
 public class Restaurant extends NamedEntity {
 
     @Column(name = "address", nullable = false)
