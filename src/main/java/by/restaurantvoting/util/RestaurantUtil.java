@@ -1,8 +1,10 @@
 package by.restaurantvoting.util;
 
 import by.restaurantvoting.model.Restaurant;
+import by.restaurantvoting.to.NamedTo;
 import by.restaurantvoting.to.RestaurantTo;
 
+import java.util.Comparator;
 import java.util.List;
 
 public final class RestaurantUtil {
@@ -13,6 +15,7 @@ public final class RestaurantUtil {
     public static List<RestaurantTo> getTos(List<Restaurant> restaurants) {
         return restaurants.stream()
                 .map(RestaurantUtil::createTo)
+                .sorted(Comparator.comparing(NamedTo::getName))
                 .toList();
     }
 
