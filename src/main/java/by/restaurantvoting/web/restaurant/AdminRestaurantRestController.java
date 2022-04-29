@@ -32,13 +32,13 @@ public class AdminRestaurantRestController extends AbstractRestaurantRestControl
     }
 
     @GetMapping("/with-voting-on-date")
-    public List<RestaurantTo> getRestaurantWithVoting(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+    public List<RestaurantTo> getAllRestaurantWithVoting(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         log.info("getAll restaurants with voting on date {}", date);
-        return RestaurantUtil.getTos(restaurantRepository.getWithVote(date));
+        return RestaurantUtil.getTos(restaurantRepository.getAllWithVote(date));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity <Restaurant> get(@PathVariable int id) {
+    public ResponseEntity<Restaurant> get(@PathVariable int id) {
         log.info("get restaurant {}", id);
         return ResponseEntity.of(restaurantRepository.findById(id));
     }
