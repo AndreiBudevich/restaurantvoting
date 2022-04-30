@@ -4,17 +4,22 @@ import by.restaurantvoting.AbstractControllerTest;
 import by.restaurantvoting.model.Dish;
 import by.restaurantvoting.repository.DishRepository;
 import by.restaurantvoting.testdata.DishTestData;
+import by.restaurantvoting.util.JsonUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import static by.restaurantvoting.testdata.DishTestData.*;
 import static by.restaurantvoting.testdata.UserTestDate.ADMIN_MAIL;
 import static by.restaurantvoting.testdata.UserTestDate.USER0_MAIL;
 import static by.restaurantvoting.util.JsonUtil.writeValue;
+import static by.restaurantvoting.web.GlobalExceptionHandler.EXCEPTION_DUPLICATE_NAME_DISH;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -110,6 +115,75 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
         newDish.setId(newId);
         DISH_MATCHER.assertMatch(created, newDish);
         DISH_MATCHER.assertMatch(dishRepository.getById(newId), newDish);
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
+    void createInvalid() throws Exception {
+        Dish invalid = new Dish(null, "", "d", 3, 5005);
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
+    void updateInvalid() throws Exception {
+        Dish invalid = new Dish(1, null, null, 3, 5005);
+        perform(MockMvcRequestBuilders.put(REST_URL + DISH_ID_0)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
+    @Transactional(propagation = Propagation.NEVER)
+    void updateDuplicate() throws Exception {
+        Dish updated = new Dish(DISH_ID_1, "Мачанка с драниками", "Updated description", 300, 800);
+        perform(MockMvcRequestBuilders.put(REST_URL + DISH_ID_1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(updated)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_NAME_DISH)));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
+    void createDuplicate() throws Exception {
+        Dish expected = new Dish(null, "Мачанка с драниками", "новое описание", 5, 2000);
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(expected)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_NAME_DISH)));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
+    void admissibleCreateDuplicate() throws Exception {
+        Dish expected = new Dish(null, "Мачанка с драниками", "новое описание", 5, 2000);
+        perform(MockMvcRequestBuilders.post(AdminDishRestController.REST_URL.replace("{restaurantId}", "2") + '/')
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(expected)))
+                .andDo(print())
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
+    void admissibleUpdateDuplicate() throws Exception {
+        Dish updated = new Dish(DISH_ID_6, "Мачанка с драниками", "Updated description", 300, 800);
+        perform(MockMvcRequestBuilders.put(AdminDishRestController.REST_URL.replace("{restaurantId}", "2") + '/' + DISH_ID_6)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(updated)))
+                .andDo(print())
+                .andExpect(status().isNoContent());
     }
 }
 
