@@ -1,8 +1,10 @@
 package by.restaurantvoting.web.restaurant;
 
 import by.restaurantvoting.model.Restaurant;
+import by.restaurantvoting.repository.RestaurantRepository;
 import by.restaurantvoting.to.RestaurantTo;
 import by.restaurantvoting.util.RestaurantUtil;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,12 +21,16 @@ import java.util.List;
 
 @RestController
 @Slf4j
+@AllArgsConstructor
 @RequestMapping(value = AdminRestaurantRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class AdminRestaurantRestController extends AbstractRestaurantRestController {
+public class AdminRestaurantRestController {
 
     static final String REST_URL = "/api/admin/restaurants";
 
     private static final Sort SORT_NAME = Sort.by(Sort.Direction.ASC, "name");
+
+    private final RestaurantRepository restaurantRepository;
+
 
     @GetMapping
     public List<Restaurant> getAll() {
