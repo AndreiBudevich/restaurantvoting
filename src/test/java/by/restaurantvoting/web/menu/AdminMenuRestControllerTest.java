@@ -5,6 +5,7 @@ import by.restaurantvoting.model.Menu;
 import by.restaurantvoting.repository.MenuRepository;
 import by.restaurantvoting.testdata.MenuTestData;
 import by.restaurantvoting.util.DateTimeUtil;
+import by.restaurantvoting.util.JsonUtil;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ import static by.restaurantvoting.testdata.UserTestDate.ADMIN_MAIL;
 import static by.restaurantvoting.testdata.UserTestDate.USER0_MAIL;
 import static by.restaurantvoting.util.DishUtil.getTos;
 import static by.restaurantvoting.util.JsonUtil.writeValue;
+import static by.restaurantvoting.web.GlobalExceptionHandler.EXCEPTION_DUPLICATE_DATE_MENU;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mockStatic;
@@ -184,4 +187,17 @@ class AdminMenuRestControllerTest extends AbstractControllerTest {
         MENU_MATCHER.assertMatch(created, newMenu);
         MENU_MATCHER.assertMatch(menuRepository.getById(newId), newMenu);
     }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
+    void createDuplicate() throws Exception {
+        Menu expected = new Menu(null, LocalDate.now());
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(expected)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_DATE_MENU)));
+    }
 }
+
