@@ -169,7 +169,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     @Transactional(propagation = Propagation.NEVER)
     @WithUserDetails(value = ADMIN_MAIL)
     void createDuplicate() throws Exception {
-        Restaurant expected = new Restaurant(1, "Пицца Темпо", "г. Минск ул. Багратиона 81", "8-029-5882922");
+        Restaurant expected = new Restaurant(null, "Пицца Темпо", "г. Минск ул. Багратиона 81", "8-029-5882922");
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(expected)))
