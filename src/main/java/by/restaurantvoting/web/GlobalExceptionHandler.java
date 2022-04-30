@@ -31,7 +31,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String EXCEPTION_DUPLICATE_EMAIL = "User with this email already exists";
     public static final String EXCEPTION_DUPLICATE_NAME_RESTAURANT = "ID_NAME_IDX";
     public static final String EXCEPTION_DUPLICATE_NAME_DISH = "RESTAURANT_ID_DISH_NAME_IDX";
-    public static final String EXCEPTION_DUPLICATE_DATE_MENU = "RESTAURANT_ID_DATE_IDX";
+    public static final String EXCEPTION_DUPLICATE_DATE_MENU = "MENU_DATE_RESTAURANT_ID_IDX_INDEX";
 
     private final ErrorAttributes errorAttributes;
 

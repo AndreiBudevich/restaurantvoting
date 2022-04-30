@@ -1,8 +1,7 @@
 package by.restaurantvoting.model;
 
 import by.restaurantvoting.View;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -14,12 +13,14 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name = "menu", uniqueConstraints = {@UniqueConstraint(columnNames = {"date", "restaurant_id"}, name = "restaurant_id_date_idx")})
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(callSuper = true, exclude = {"restaurant", "dishes"})
+@Table(name = "menu", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_date", "restaurant_id"}, name = "menu_date_restaurant_id_idx")})
 public class Menu extends BaseEntity {
 
-    @Column(name = "date", nullable = false, updatable = false)
+    @Column(name = "menu_date", nullable = false, updatable = false)
     @NotNull
-    private LocalDate date;
+    private LocalDate menuDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -41,11 +42,8 @@ public class Menu extends BaseEntity {
         }
     }
 
-    public Menu() {
-    }
-
-    public Menu(Integer id, LocalDate date) {
+    public Menu(Integer id, LocalDate menuDate) {
         super(id);
-        this.date = date;
+        this.menuDate = menuDate;
     }
 }

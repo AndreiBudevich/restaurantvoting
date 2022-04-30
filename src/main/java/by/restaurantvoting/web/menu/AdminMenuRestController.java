@@ -52,7 +52,7 @@ public class AdminMenuRestController extends AbstractMenuRestController {
             log.info("didn't delete menu {} for restaurant {} as menu not found", id, restaurantId);
             return new ResponseEntity<>("NOT FOUND", HttpStatus.NOT_FOUND);
         }
-        if (menu.getDate().isEqual(getToday()) && getCurrentTime().isAfter(DEADLINE_DELETE_TODAY_MENU)) {
+        if (menu.getMenuDate().isEqual(getToday()) && getCurrentTime().isAfter(DEADLINE_DELETE_TODAY_MENU)) {
             log.info("didn't delete menu {} for restaurant {}", id, restaurantId);
             return new ResponseEntity<>("NOT DELETE", HttpStatus.NO_CONTENT);
         }

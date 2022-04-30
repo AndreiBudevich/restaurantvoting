@@ -51,7 +51,7 @@ VALUES ('Мачанка с драниками',
         'соус из протертых томатов, Моцарелла, ветчина, шампиньоны, маринованные огурцы, приправа к пицце, масло чесночное',
         290, 67, 2);
 
-INSERT INTO menu (date, restaurant_id)
+INSERT INTO menu (menu_date, restaurant_id)
 VALUES (current_date - 1, 1),
        (current_date, 1),
        (current_date + 1, 1),
