@@ -2,8 +2,7 @@ package by.restaurantvoting.model;
 
 import by.restaurantvoting.View;
 import by.restaurantvoting.util.validation.NoHtml;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
@@ -17,6 +16,8 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(callSuper = true, exclude = {"restaurant", "menus"})
 @Table(name = "dish", uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "name"}, name = "restaurant_id_dish_name_idx")})
 public class Dish extends NamedEntity {
 
@@ -47,9 +48,6 @@ public class Dish extends NamedEntity {
             joinColumns = @JoinColumn(name = "dish_id"),
             inverseJoinColumns = @JoinColumn(name = "menu_id"))
     private Set<Menu> menus;
-
-    public Dish() {
-    }
 
     public Dish(Integer id, String name, String description, int weight, int price) {
         super(id, name);
