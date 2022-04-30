@@ -19,6 +19,9 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
+import static by.restaurantvoting.util.validation.ValidationUtil.assureIdConsistent;
+import static by.restaurantvoting.util.validation.ValidationUtil.checkNew;
+
 @RestController
 @Slf4j
 @AllArgsConstructor
@@ -60,12 +63,14 @@ public class AdminRestaurantRestController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
+        assureIdConsistent(restaurant, id);
         log.info("update restaurant {}", id);
         restaurantRepository.save(restaurant);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody Restaurant restaurant) {
+        checkNew(restaurant);
         Restaurant created = restaurantRepository.save(restaurant);
         log.info("create  restaurant {}", created);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
