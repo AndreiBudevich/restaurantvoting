@@ -1,8 +1,7 @@
 package by.restaurantvoting.model;
 
 import by.restaurantvoting.util.validation.NoHtml;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -13,6 +12,8 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(callSuper = true, exclude = {"menus", "dishes", "votes"})
 @Table(name = "restaurant", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"}, name = "id_name_idx")})
 public class Restaurant extends NamedEntity {
 
@@ -36,9 +37,6 @@ public class Restaurant extends NamedEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     private Set<Vote> votes;
-
-    public Restaurant() {
-    }
 
     public Restaurant(Integer id, String name, String address, String contacts) {
         super(id, name);
