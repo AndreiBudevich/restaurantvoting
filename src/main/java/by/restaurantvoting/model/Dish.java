@@ -1,6 +1,7 @@
 package by.restaurantvoting.model;
 
 import by.restaurantvoting.View;
+import by.restaurantvoting.util.validation.NoHtml;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -22,6 +23,7 @@ public class Dish extends NamedEntity {
     @Column(name = "description", nullable = false)
     @NotBlank
     @Size(min = 2, max = 120)
+    @NoHtml
     private String description;
 
     @Column(name = "weight", nullable = false)

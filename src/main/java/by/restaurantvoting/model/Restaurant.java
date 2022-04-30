@@ -1,5 +1,6 @@
 package by.restaurantvoting.model;
 
+import by.restaurantvoting.util.validation.NoHtml;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,11 +19,13 @@ public class Restaurant extends NamedEntity {
     @Column(name = "address", nullable = false)
     @NotBlank
     @Size(min = 2, max = 120)
+    @NoHtml
     private String address;
 
     @Column(name = "contacts", nullable = false)
     @NotBlank
     @Size(min = 2, max = 120)
+    @NoHtml
     private String contacts;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
