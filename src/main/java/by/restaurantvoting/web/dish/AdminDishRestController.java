@@ -16,6 +16,9 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
+import static by.restaurantvoting.util.validation.ValidationUtil.assureIdConsistent;
+import static by.restaurantvoting.util.validation.ValidationUtil.checkNew;
+
 @RestController
 @Slf4j
 @AllArgsConstructor
@@ -45,6 +48,8 @@ public class AdminDishRestController {
     @Transactional
     public void update(@PathVariable int restaurantId, @Valid @RequestBody Dish dish, @PathVariable int id) {
         dish.setRestaurant(restaurantRepository.getOne(restaurantId));
+        assureIdConsistent(dish, id);
+        dishRepository.checkBelong(id, restaurantId);
         log.info("update dish {} for restaurant {}", id, restaurantId);
         dishRepository.save(dish);
     }
@@ -59,6 +64,7 @@ public class AdminDishRestController {
     @Transactional
     public ResponseEntity<Dish> createWithLocation(@PathVariable int restaurantId, @Valid @RequestBody Dish dish) {
         dish.setRestaurant(restaurantRepository.getOne(restaurantId));
+        checkNew(dish);
         Dish created = dishRepository.save(dish);
         log.info("create {} for restaurant {}", created, restaurantId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
