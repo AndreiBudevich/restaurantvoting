@@ -1,5 +1,6 @@
 package by.restaurantvoting.model;
 
+import by.restaurantvoting.View;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -36,6 +37,7 @@ public class Dish extends NamedEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotNull(groups = View.Persist.class)
     private Restaurant restaurant;
 
     @ManyToMany
