@@ -1,20 +1,24 @@
 package by.restaurantvoting.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(callSuper = true, exclude = {"restaurant", "user"})
 @Table(name = "vote")
 public class Vote extends BaseEntity {
 
-    private LocalDate date;
+    @Column(name = "vote_date", nullable = false, updatable = false)
+    @NotNull
+    private LocalDate voteDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -26,17 +30,8 @@ public class Vote extends BaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    public Vote(Integer id, LocalDate date, User user) {
-        super(id);
-        this.date = date;
-        this.user = user;
-    }
-
     public Vote(LocalDate date, User user) {
-        this.date = date;
+        this.voteDate = date;
         this.user = user;
-    }
-
-    public Vote() {
     }
 }

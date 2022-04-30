@@ -10,7 +10,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface VoteRepository extends BaseRepository<Vote> {
 
-    @Query("SELECT v FROM Vote v WHERE v.user.id = ?1 and v.date = ?2")
+    @Query("SELECT v FROM Vote v WHERE v.user.id = ?1 and v.voteDate = ?2")
     Vote getByDateUserId(int userId, LocalDate date);
 
     @Query("SELECT v FROM Vote v JOIN FETCH v.restaurant WHERE v.user.id = ?1")

@@ -48,7 +48,7 @@ class UserRestaurantRestControllerTest extends AbstractControllerTest {
                     .andDo(print())
                     .andExpect(status().isOk());
             assertEquals(restaurant1, voteRepository.getAllByUserId(USER0_ID).stream()
-                    .filter(vote -> vote.getDate().isEqual(fixedDate))
+                    .filter(vote -> vote.getVoteDate().isEqual(fixedDate))
                     .findFirst().orElse(null).getRestaurant());
         }
     }
@@ -58,7 +58,7 @@ class UserRestaurantRestControllerTest extends AbstractControllerTest {
     @Transactional(propagation = Propagation.NEVER)
     void changeVote() throws Exception {
         assertEquals(restaurant1, voteRepository.getAllByUserId(USER0_ID).stream()
-                .filter(vote -> vote.getDate().isEqual(LocalDate.now()))
+                .filter(vote -> vote.getVoteDate().isEqual(LocalDate.now()))
                 .findFirst().orElse(null).getRestaurant());
         try (MockedStatic<DateTimeUtil> mockedStatic = mockStatic(DateTimeUtil.class)) {
             LocalDate fixedDate = LocalDate.now();
@@ -69,7 +69,7 @@ class UserRestaurantRestControllerTest extends AbstractControllerTest {
                     .andDo(print())
                     .andExpect(status().isOk());
             assertEquals(restaurant0, voteRepository.getAllByUserId(USER0_ID).stream()
-                    .filter(vote -> vote.getDate().isEqual(fixedDate))
+                    .filter(vote -> vote.getVoteDate().isEqual(fixedDate))
                     .findFirst().orElse(null).getRestaurant());
         }
     }
@@ -80,7 +80,7 @@ class UserRestaurantRestControllerTest extends AbstractControllerTest {
     @Transactional(propagation = Propagation.NEVER)
     void changeVoteAfterDeadLineTime() throws Exception {
         assertEquals(restaurant1, voteRepository.getAllByUserId(USER0_ID).stream()
-                .filter(vote -> vote.getDate().isEqual(LocalDate.now()))
+                .filter(vote -> vote.getVoteDate().isEqual(LocalDate.now()))
                 .findFirst().orElse(null).getRestaurant());
         try (MockedStatic<DateTimeUtil> mockedStatic = mockStatic(DateTimeUtil.class)) {
             LocalDate fixedDate = LocalDate.now();
@@ -91,7 +91,7 @@ class UserRestaurantRestControllerTest extends AbstractControllerTest {
                     .andDo(print())
                     .andExpect(status().isOk());
             assertEquals(restaurant1, voteRepository.getAllByUserId(USER0_ID).stream()
-                    .filter(vote -> vote.getDate().isEqual(fixedDate))
+                    .filter(vote -> vote.getVoteDate().isEqual(fixedDate))
                     .findFirst().orElse(null).getRestaurant());
         }
     }
@@ -101,7 +101,7 @@ class UserRestaurantRestControllerTest extends AbstractControllerTest {
     @Transactional(propagation = Propagation.NEVER)
     void deleteVote() throws Exception {
         assertEquals(restaurant1, voteRepository.getAllByUserId(USER0_ID).stream()
-                .filter(vote -> vote.getDate().isEqual(LocalDate.now()))
+                .filter(vote -> vote.getVoteDate().isEqual(LocalDate.now()))
                 .findFirst().orElse(null).getRestaurant());
         try (MockedStatic<DateTimeUtil> mockedStatic = mockStatic(DateTimeUtil.class)) {
             LocalDate fixedDate = LocalDate.now();
@@ -112,7 +112,7 @@ class UserRestaurantRestControllerTest extends AbstractControllerTest {
                     .andDo(print())
                     .andExpect(status().isOk());
             assertNull(voteRepository.getAllByUserId(USER0_ID).stream()
-                    .filter(vote -> vote.getDate().isEqual(fixedDate))
+                    .filter(vote -> vote.getVoteDate().isEqual(fixedDate))
                     .findFirst().orElse(null));
         }
     }
