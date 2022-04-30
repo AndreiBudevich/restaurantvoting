@@ -177,4 +177,16 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_NAME_RESTAURANT)));
     }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
+    void updateHtmlUnsafe() throws Exception {
+        Restaurant invalid = new Restaurant(1, "<script>alert(123)</script>", "<script>alert(123)</script>",
+                "<script>alert(123)</script>");
+        perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT_ID_0)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
 }

@@ -185,5 +185,16 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
     }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
+    void updateHtmlUnsafe() throws Exception {
+        Dish invalid = new Dish(1, "<script>alert(123)</script>", "<script>alert(123)</script>", 3, 5005);
+        perform(MockMvcRequestBuilders.put(REST_URL + DISH_ID_0)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
 }
 
