@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -43,7 +44,9 @@ public class AdminDishRestController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable int restaurantId, @RequestBody Dish dish, @PathVariable int id) {
+    @Transactional
+    public void update(@PathVariable int restaurantId, @Valid @RequestBody Dish dish, @PathVariable int id) {
+        dish.setRestaurant(restaurantRepository.getOne(restaurantId));
         log.info("update dish {} for restaurant {}", id, restaurantId);
         dishRepository.save(dish);
     }
@@ -55,6 +58,7 @@ public class AdminDishRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
     public ResponseEntity<Dish> createWithLocation(@PathVariable int restaurantId, @Valid @RequestBody Dish dish) {
         dish.setRestaurant(restaurantRepository.getOne(restaurantId));
         Dish created = dishRepository.save(dish);
