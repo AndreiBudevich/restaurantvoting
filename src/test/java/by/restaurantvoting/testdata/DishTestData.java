@@ -14,6 +14,7 @@ public class DishTestData {
     public static final int DISH_ID_3 = DISH_ID_2 + 1;
     public static final int DISH_ID_4 = DISH_ID_3 + 1;
     public static final int DISH_ID_5 = DISH_ID_4 + 1;
+    public static final int DISH_ID_6 = DISH_ID_5 + 1;
 
     public static final MatcherFactory.Matcher<Dish> DISH_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Dish.class, "restaurant", "menus");
     public static final MatcherFactory.Matcher<DishTo> DISH_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(DishTo.class);
@@ -35,6 +36,9 @@ public class DishTestData {
             335, 75);
     public static final Dish dish5 = new Dish(DISH_ID_5, "Еда не в меню", "без описания",
             290, 105);
+    public static final Dish dish6 = new Dish(DISH_ID_6, "Пицца Пикантная",
+            "соус из протертых томатов, Моцарелла, курица, ананасы, приправа к пицце, масло чесночное",
+            290, 67);
 
     public static List<Dish> dishesByRestaurant0 = List.of(dish0, dish1, dish2, dish3, dish4, dish5);
 
@@ -45,5 +49,4 @@ public class DishTestData {
     public static Dish getUpdated() {
         return new Dish(DISH_ID_0, "Updated name", "Updated description", 300, 800);
     }
-
 }
