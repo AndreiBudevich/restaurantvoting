@@ -2,6 +2,8 @@ package by.restaurantvoting.web.menu;
 
 import by.restaurantvoting.model.Dish;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
+@CacheConfig(cacheNames = "menus")
 @RequestMapping(value = UserMenuRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserMenuRestController extends AbstractMenuRestController {
 
@@ -20,6 +23,7 @@ public class UserMenuRestController extends AbstractMenuRestController {
 
     @Override
     @GetMapping("/{id}")
+    @Cacheable
     public ResponseEntity<List<Dish>> get(@PathVariable int restaurantId, @PathVariable int id) {
         return super.get(restaurantId, id);
     }
