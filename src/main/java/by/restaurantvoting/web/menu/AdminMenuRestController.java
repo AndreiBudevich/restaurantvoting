@@ -29,7 +29,7 @@ import static by.restaurantvoting.util.validation.ValidationUtil.checkNew;
 @RequestMapping(value = AdminMenuRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminMenuRestController extends AbstractMenuRestController {
 
-    static final String REST_URL = "/api/admin/{restaurantId}/menus";
+    static final String REST_URL = "/api/admin/restaurants/{restaurantId}/menus";
 
     private final RestaurantRepository restaurantRepository;
     private final MenuRepository menuRepository;
