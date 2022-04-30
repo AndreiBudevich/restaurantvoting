@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -85,7 +86,7 @@ public class AdminMenuRestController extends AbstractMenuRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Menu> createWithLocation(@PathVariable int restaurantId, @RequestBody Menu menu) {
+    public ResponseEntity<Menu> createWithLocation(@PathVariable int restaurantId, @Valid @RequestBody Menu menu) {
         Restaurant restaurant = restaurantRepository.getOne(restaurantId);
         menu.setRestaurant(restaurant);
         Menu created = menuRepository.save(menu);
