@@ -21,6 +21,7 @@ import java.util.List;
 
 import static by.restaurantvoting.util.DateTimeUtil.*;
 import static by.restaurantvoting.util.DishUtil.getTos;
+import static by.restaurantvoting.util.validation.ValidationUtil.checkNew;
 
 @RestController
 @Slf4j
@@ -87,6 +88,7 @@ public class AdminMenuRestController extends AbstractMenuRestController {
     public ResponseEntity<Menu> createWithLocation(@PathVariable int restaurantId, @Valid @RequestBody Menu menu) {
         Restaurant restaurant = restaurantRepository.getOne(restaurantId);
         menu.setRestaurant(restaurant);
+        checkNew(menu);
         Menu created = menuRepository.save(menu);
         log.info("create {} for restaurant {}", created, restaurantId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}").buildAndExpand(created.getId()).toUri();
