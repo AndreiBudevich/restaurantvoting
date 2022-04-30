@@ -6,8 +6,8 @@ import by.restaurantvoting.model.Restaurant;
 import by.restaurantvoting.repository.MenuRepository;
 import by.restaurantvoting.repository.RestaurantRepository;
 import by.restaurantvoting.to.DishTo;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,16 +24,14 @@ import static by.restaurantvoting.util.DishUtil.getTos;
 
 @RestController
 @Slf4j
+@AllArgsConstructor
 @RequestMapping(value = AdminMenuRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminMenuRestController extends AbstractMenuRestController {
 
     static final String REST_URL = "/api/admin/{restaurantId}/menus";
 
-    @Autowired
-    RestaurantRepository restaurantRepository;
-
-    @Autowired
-    MenuRepository menuRepository;
+    private final RestaurantRepository restaurantRepository;
+    private final MenuRepository menuRepository;
 
     @Override
     @GetMapping("/{id}")
