@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static by.restaurantvoting.testdata.DishTestData.*;
@@ -24,6 +25,7 @@ class UserMenuRestControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = USER0_MAIL)
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     void get() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT0_MENU_ID_0))
                 .andExpect(status().isOk())
