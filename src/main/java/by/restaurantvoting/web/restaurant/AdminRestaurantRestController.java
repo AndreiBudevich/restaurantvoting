@@ -4,6 +4,8 @@ import by.restaurantvoting.model.Restaurant;
 import by.restaurantvoting.repository.RestaurantRepository;
 import by.restaurantvoting.to.RestaurantTo;
 import by.restaurantvoting.util.RestaurantUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -26,6 +28,7 @@ import static by.restaurantvoting.util.validation.ValidationUtil.checkNew;
 @Slf4j
 @AllArgsConstructor
 @RequestMapping(value = AdminRestaurantRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Rest admin controller by restaurants", description = "Allows the administrator to manage restaurants")
 public class AdminRestaurantRestController {
 
     static final String REST_URL = "/api/admin/restaurants";
@@ -36,18 +39,21 @@ public class AdminRestaurantRestController {
 
 
     @GetMapping
+    @Operation(summary = "get all restaurants", description = "Allows you to get all a restaurants")
     public List<Restaurant> getAll() {
         log.info("getAll restaurants");
         return restaurantRepository.findAll(SORT_NAME);
     }
 
     @GetMapping("/with-voting-on-date")
+    @Operation(summary = "get all restaurants", description = "Allows you to get all restaurants with votes for a specific date")
     public List<RestaurantTo> getAllRestaurantWithVoting(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         log.info("getAll restaurants with voting on date {}", date);
         return RestaurantUtil.getTos(restaurantRepository.getAllWithVote(date));
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "get restaurant", description = "Allows you to get a restaurant by its id")
     public ResponseEntity<Restaurant> get(@PathVariable int id) {
         log.info("get restaurant {}", id);
         return ResponseEntity.of(restaurantRepository.findById(id));
@@ -55,6 +61,7 @@ public class AdminRestaurantRestController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "delete restaurant", description = "Allows you to delete a restaurant by its id")
     public void delete(@PathVariable int id) {
         log.info("delete restaurant {}", id);
         restaurantRepository.deleteExisted(id);
@@ -62,6 +69,7 @@ public class AdminRestaurantRestController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "update restaurant", description = "Allows you to update a restaurant by its id")
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
         assureIdConsistent(restaurant, id);
         log.info("update restaurant {}", id);
@@ -69,6 +77,7 @@ public class AdminRestaurantRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "create restaurant", description = "Allows you to create a restaurant")
     public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody Restaurant restaurant) {
         checkNew(restaurant);
         Restaurant created = restaurantRepository.save(restaurant);
