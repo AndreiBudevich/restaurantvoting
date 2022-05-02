@@ -8,8 +8,6 @@ import by.restaurantvoting.repository.VoteRepository;
 import by.restaurantvoting.web.AuthUser;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +22,6 @@ import static by.restaurantvoting.util.DateTimeUtil.*;
 @RestController
 @AllArgsConstructor
 @Slf4j
-@CacheConfig(cacheNames = "restaurants")
 @RequestMapping(value = UserRestaurantRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserRestaurantRestController {
 
@@ -35,7 +32,6 @@ public class UserRestaurantRestController {
     private final RestaurantRepository restaurantRepository;
 
     @GetMapping
-    @Cacheable
     public List<Restaurant> getAll() {
         return restaurantRepository.getAllWithMenu(getToday());
     }
