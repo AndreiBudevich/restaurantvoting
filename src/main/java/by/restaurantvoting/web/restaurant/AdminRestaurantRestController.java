@@ -37,7 +37,6 @@ public class AdminRestaurantRestController {
 
     private final RestaurantRepository restaurantRepository;
 
-
     @GetMapping
     @Operation(summary = "get all restaurants", description = "Allows you to get all a restaurants")
     public List<Restaurant> getAll() {

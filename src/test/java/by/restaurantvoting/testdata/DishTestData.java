@@ -36,9 +36,6 @@ public class DishTestData {
             335, 75);
     public static final Dish dish5 = new Dish(DISH_ID_5, "Еда не в меню", "без описания",
             290, 105);
-    public static final Dish dish6 = new Dish(DISH_ID_6, "Пицца Пикантная",
-            "соус из протертых томатов, Моцарелла, курица, ананасы, приправа к пицце, масло чесночное",
-            290, 67);
 
     public static List<Dish> dishesByRestaurant0 = List.of(dish0, dish1, dish2, dish3, dish4, dish5);
 

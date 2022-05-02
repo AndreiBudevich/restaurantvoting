@@ -58,7 +58,6 @@ class ProfileControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(newTo)))
                 .andDo(print())
                 .andExpect(status().isCreated());
-
         User created = USER_MATCHER.readFromJson(action);
         int newId = created.id();
         newUser.setId(newId);
@@ -74,7 +73,6 @@ class ProfileControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(updatedTo)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-
         USER_MATCHER.assertMatch(userRepository.getById(USER0_ID), UserUtil.updateFromTo(new User(user0), updatedTo));
     }
 

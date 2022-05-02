@@ -3,14 +3,13 @@ package by.restaurantvoting.util;
 import by.restaurantvoting.model.Restaurant;
 import by.restaurantvoting.to.NamedTo;
 import by.restaurantvoting.to.RestaurantTo;
+import lombok.experimental.UtilityClass;
 
 import java.util.Comparator;
 import java.util.List;
 
-public final class RestaurantUtil {
-
-    private RestaurantUtil() {
-    }
+@UtilityClass
+public class RestaurantUtil {
 
     public static List<RestaurantTo> getTos(List<Restaurant> restaurants) {
         return restaurants.stream()

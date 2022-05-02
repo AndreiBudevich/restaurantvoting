@@ -117,7 +117,6 @@ class AdminUserControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(newUser, "newPass")))
                 .andExpect(status().isCreated());
-
         User created = USER_MATCHER.readFromJson(action);
         int newId = created.id();
         newUser.setId(newId);
@@ -142,7 +141,6 @@ class AdminUserControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-
         assertFalse(userRepository.getById(USER0_ID).isEnabled());
     }
 
