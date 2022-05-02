@@ -3,8 +3,6 @@ package by.restaurantvoting.web.dish;
 import by.restaurantvoting.AbstractControllerTest;
 import by.restaurantvoting.model.Dish;
 import by.restaurantvoting.repository.DishRepository;
-import by.restaurantvoting.testdata.DishTestData;
-import by.restaurantvoting.util.JsonUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -93,19 +91,19 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void update() throws Exception {
-        Dish updated = DishTestData.getUpdated();
+        Dish updated = getUpdated();
         perform(MockMvcRequestBuilders.put(REST_URL + DISH_ID_0)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(updated)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        DISH_MATCHER.assertMatch(dishRepository.getById(DISH_ID_0), DishTestData.getUpdated());
+        DISH_MATCHER.assertMatch(dishRepository.getById(DISH_ID_0), getUpdated());
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createWithLocation() throws Exception {
-        Dish newDish = DishTestData.getNew();
+        Dish newDish = getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(newDish)))
@@ -123,7 +121,7 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
         Dish invalid = new Dish(null, "", "d", 3, 5005);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(invalid)))
+                .content(writeValue(invalid)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -134,7 +132,7 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
         Dish invalid = new Dish(1, null, null, 3, 5005);
         perform(MockMvcRequestBuilders.put(REST_URL + DISH_ID_0)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(invalid)))
+                .content(writeValue(invalid)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -146,7 +144,7 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
         Dish updated = new Dish(DISH_ID_1, "Мачанка с драниками", "Updated description", 300, 800);
         perform(MockMvcRequestBuilders.put(REST_URL + DISH_ID_1)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                .content(writeValue(updated)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_NAME_DISH)));
@@ -158,7 +156,7 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
         Dish expected = new Dish(null, "Мачанка с драниками", "новое описание", 5, 2000);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(expected)))
+                .content(writeValue(expected)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_NAME_DISH)));
@@ -170,7 +168,7 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
         Dish expected = new Dish(null, "Мачанка с драниками", "новое описание", 5, 2000);
         perform(MockMvcRequestBuilders.post(AdminDishRestController.REST_URL.replace("{restaurantId}", "2") + '/')
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(expected)))
+                .content(writeValue(expected)))
                 .andDo(print())
                 .andExpect(status().isCreated());
     }
@@ -181,7 +179,7 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
         Dish updated = new Dish(DISH_ID_6, "Мачанка с драниками", "Updated description", 300, 800);
         perform(MockMvcRequestBuilders.put(AdminDishRestController.REST_URL.replace("{restaurantId}", "2") + '/' + DISH_ID_6)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                .content(writeValue(updated)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
     }
@@ -192,7 +190,7 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
         Dish invalid = new Dish(1, "<script>alert(123)</script>", "<script>alert(123)</script>", 3, 5005);
         perform(MockMvcRequestBuilders.put(REST_URL + DISH_ID_0)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(invalid)))
+                .content(writeValue(invalid)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }

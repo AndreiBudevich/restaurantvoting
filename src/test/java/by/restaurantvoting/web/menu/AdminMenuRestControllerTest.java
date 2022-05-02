@@ -5,7 +5,6 @@ import by.restaurantvoting.model.Menu;
 import by.restaurantvoting.repository.MenuRepository;
 import by.restaurantvoting.testdata.MenuTestData;
 import by.restaurantvoting.util.DateTimeUtil;
-import by.restaurantvoting.util.JsonUtil;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -194,7 +193,7 @@ class AdminMenuRestControllerTest extends AbstractControllerTest {
         Menu expected = new Menu(null, LocalDate.now());
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(expected)))
+                .content(writeValue(expected)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_DATE_MENU)));

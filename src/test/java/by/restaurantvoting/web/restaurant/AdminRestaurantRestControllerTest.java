@@ -3,8 +3,6 @@ package by.restaurantvoting.web.restaurant;
 import by.restaurantvoting.AbstractControllerTest;
 import by.restaurantvoting.model.Restaurant;
 import by.restaurantvoting.repository.RestaurantRepository;
-import by.restaurantvoting.testdata.RestaurantTestData;
-import by.restaurantvoting.util.JsonUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -95,19 +93,19 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void update() throws Exception {
-        Restaurant updated = RestaurantTestData.getUpdated();
+        Restaurant updated = getUpdated();
         perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT_ID_0)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(updated)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        RESTAURANT_MATCHER.assertMatch(restaurantRepository.getById(RESTAURANT_ID_0), RestaurantTestData.getUpdated());
+        RESTAURANT_MATCHER.assertMatch(restaurantRepository.getById(RESTAURANT_ID_0), getUpdated());
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createWithLocation() throws Exception {
-        Restaurant newRestaurant = RestaurantTestData.getNew();
+        Restaurant newRestaurant = getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(newRestaurant)))
@@ -135,7 +133,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
         Restaurant invalid = new Restaurant(null, null, "D", "");
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(invalid)))
+                .content(writeValue(invalid)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -146,7 +144,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
         Restaurant invalid = new Restaurant(1, null, "D", "");
         perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT_ID_0)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(invalid)))
+                .content(writeValue(invalid)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -158,7 +156,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
         Restaurant updated = new Restaurant(1, "Пицца Темпо", "г. Минск ул. Багратиона 81", "8-029-5882922");
         perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT_ID_0)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                .content(writeValue(updated)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_NAME_RESTAURANT)));
@@ -171,7 +169,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
         Restaurant expected = new Restaurant(null, "Пицца Темпо", "г. Минск ул. Багратиона 81", "8-029-5882922");
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(expected)))
+                .content(writeValue(expected)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_NAME_RESTAURANT)));
@@ -184,7 +182,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
                 "<script>alert(123)</script>");
         perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT_ID_0)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(invalid)))
+                .content(writeValue(invalid)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
