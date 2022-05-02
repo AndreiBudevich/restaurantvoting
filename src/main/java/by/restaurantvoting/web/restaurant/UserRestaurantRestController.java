@@ -6,6 +6,8 @@ import by.restaurantvoting.repository.RestaurantRepository;
 import by.restaurantvoting.repository.UserRepository;
 import by.restaurantvoting.repository.VoteRepository;
 import by.restaurantvoting.web.AuthUser;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,7 @@ import static by.restaurantvoting.util.DateTimeUtil.*;
 @AllArgsConstructor
 @Slf4j
 @RequestMapping(value = UserRestaurantRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Rest user controller by restaurants", description = "Allows the user to get the available operations on the restaurant")
 public class UserRestaurantRestController {
 
     protected static final String REST_URL = "/api/user/restaurants";
@@ -38,6 +41,10 @@ public class UserRestaurantRestController {
 
     @PutMapping("/{restaurantId}")
     @Transactional
+    @Operation(summary = "vote for the restaurant", description = "Allows you to vote for a restaurant until 11.00, " +
+            "if you vote again for the same restaurant, this will cancel the vote for it, if you vote again, " +
+            "but for a different restaurant, the vote will change"
+    )
     public ResponseEntity<String> setOrDeleteTodayUserVote(@AuthenticationPrincipal AuthUser authUser, @PathVariable int restaurantId) {
         String message = "DID NOT SET";
         int userId = authUser.id();
