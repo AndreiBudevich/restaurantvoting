@@ -144,7 +144,6 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     void updateInvalid() throws Exception {
         Restaurant invalid = new Restaurant(1, null, "D", "");
-        ;
         perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT_ID_0)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))

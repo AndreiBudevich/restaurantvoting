@@ -114,7 +114,6 @@ class ProfileControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = USER0_MAIL)
     void updateHtmlUnsafe() throws Exception {
         UserTo updatedTo = new UserTo(1, "<script>alert(123)</script>", USER0_MAIL, "newPassword");
-        ;
         perform(MockMvcRequestBuilders.put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updatedTo)))
