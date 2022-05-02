@@ -3,6 +3,8 @@ package by.restaurantvoting.web.dish;
 import by.restaurantvoting.model.Dish;
 import by.restaurantvoting.repository.DishRepository;
 import by.restaurantvoting.repository.RestaurantRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,7 @@ import static by.restaurantvoting.util.validation.ValidationUtil.checkNew;
 @Slf4j
 @AllArgsConstructor
 @RequestMapping(value = AdminDishRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Rest admin controller by dish", description = "Allows the administrator to manage the dishes by restaurant ID")
 public class AdminDishRestController {
 
     static final String REST_URL = "/api/admin/restaurants/{restaurantId}/dishes";
@@ -32,12 +35,14 @@ public class AdminDishRestController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "delete dish", description = "Allows you to delete a restaurant dish by its id")
     public void delete(@PathVariable int restaurantId, @PathVariable int id) {
         dishRepository.deleteExisted(id);
         log.info("delete dish {} for restaurant {}", id, restaurantId);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping({"/{id}"})
+    @Operation(summary = "get dish", description = "Allows you to get a restaurant dish by its id")
     public ResponseEntity<Dish> get(@PathVariable int restaurantId, @PathVariable int id) {
         log.info("get dish {} for restaurant {}", id, restaurantId);
         return ResponseEntity.of(dishRepository.findById(id));
@@ -46,6 +51,7 @@ public class AdminDishRestController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
+    @Operation(summary = "update dish", description = "Allows you to update a restaurant dish by its id")
     public void update(@PathVariable int restaurantId, @Valid @RequestBody Dish dish, @PathVariable int id) {
         dish.setRestaurant(restaurantRepository.getOne(restaurantId));
         assureIdConsistent(dish, id);
@@ -55,6 +61,7 @@ public class AdminDishRestController {
     }
 
     @GetMapping
+    @Operation(summary = "get all dishes", description = "Allows you to get all a restaurant dishes by its id")
     public List<Dish> getAllDishesByRestaurantId(@PathVariable int restaurantId) {
         log.info("getAll dishes for menu for restaurant {}", restaurantId);
         return dishRepository.getAllDishesByRestaurantId(restaurantId);
@@ -62,6 +69,7 @@ public class AdminDishRestController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
+    @Operation(summary = "create dish", description = "Allows you to create a restaurant dish")
     public ResponseEntity<Dish> createWithLocation(@PathVariable int restaurantId, @Valid @RequestBody Dish dish) {
         dish.setRestaurant(restaurantRepository.getOne(restaurantId));
         checkNew(dish);

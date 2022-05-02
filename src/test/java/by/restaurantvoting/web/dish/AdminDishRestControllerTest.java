@@ -5,7 +5,6 @@ import by.restaurantvoting.model.Dish;
 import by.restaurantvoting.repository.DishRepository;
 import by.restaurantvoting.testdata.DishTestData;
 import by.restaurantvoting.util.JsonUtil;
-import io.swagger.v3.oas.annotations.Operation;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -35,7 +34,6 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
-
     void get() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + DISH_ID_0))
                 .andExpect(status().isOk())
