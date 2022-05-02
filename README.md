@@ -21,4 +21,18 @@ Build a voting system for deciding where to have lunch.
 
 Each restaurant provides a new menu each day.
 
------------------------------
+
+
+-------------------------------------------------------------
+- Stack: [JDK 17](http://jdk.java.net/17/), Spring Boot 2.5, Lombok, H2, Caffeine Cache, Swagger/OpenAPI 3.0
+- Run: `mvn spring-boot:run` in root directory.
+-----------------------------------------------------
+[REST API documentation](http://localhost:8080/swagger-ui.html)  
+Credenshels:
+```
+Admin: admin@gmail.com / admin
+User0:  user0@yandex.ru / password0
+User1:  user1@yandex.ru / password1
+User2:  user2@yandex.ru / password2
+User3:  user3@yandex.ru / password3
+
