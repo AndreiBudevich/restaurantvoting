@@ -39,7 +39,7 @@ public class RestaurantTestData {
 
     static {
         restaurant0.setVotes(Set.of(VoteTestData.vote0, VoteTestData.vote1, VoteTestData.vote2));
-        restaurant1.setVotes(Set.of(VoteTestData.vote3, VoteTestData.vote4, VoteTestData.vote5, VoteTestData.vote6, VoteTestData.vote7, VoteTestData.vote8, VoteTestData.vote9, VoteTestData.vote10));
+        restaurant1.setVotes(Set.of(VoteTestData.vote3));
         restaurant2.setVotes(new HashSet<>());
         restaurant3.setVotes(new HashSet<>());
     }

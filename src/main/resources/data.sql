@@ -3,14 +3,6 @@ VALUES ('User0', 'user0@yandex.ru', '{noop}password0'),
        ('User1', 'user1@yandex.ru', '{noop}password1'),
        ('User2', 'user2@yandex.ru', '{noop}password2'),
        ('User3', 'user3@yandex.ru', '{noop}password3'),
-       ('User4', 'user4@yandex.ru', '{noop}password4'),
-       ('User5', 'user5@yandex.ru', '{noop}password5'),
-       ('User6', 'user6@yandex.ru', '{noop}password6'),
-       ('User7', 'user7@yandex.ru', '{noop}password7'),
-       ('User8', 'user8@yandex.ru', '{noop}password8'),
-       ('User9', 'user9@yandex.ru', '{noop}password9'),
-       ('User10', 'user10@yandex.ru', '{noop}password10'),
-       ('User11 без голосования', 'user11@yandex.ru', '{noop}password11'),
        ('Admin', 'admin@gmail.com', '{noop}admin');
 
 INSERT INTO USER_ROLES (role, user_id)
@@ -18,15 +10,7 @@ VALUES ('USER', 1),
        ('USER', 2),
        ('USER', 3),
        ('USER', 4),
-       ('USER', 5),
-       ('USER', 6),
-       ('USER', 7),
-       ('USER', 8),
-       ('USER', 9),
-       ('USER', 10),
-       ('USER', 11),
-       ('USER', 12),
-       ('ADMIN', 13);
+       ('ADMIN', 5);
 
 INSERT INTO restaurant (name, address, contacts)
 VALUES ('Ваcильки', 'г. Минск ул. Тимирязева 67', '8-029-7634349'),
@@ -64,24 +48,9 @@ VALUES (current_date - 1, 1, 1),
        (current_date - 1, 2, 1),
        (current_date - 1, 3, 1),
        (current_date - 1, 4, 2),
-       (current_date - 1, 5, 2),
-       (current_date - 1, 6, 2),
-       (current_date - 1, 7, 2),
-       (current_date - 1, 8, 2),
-       (current_date - 1, 9, 2),
-       (current_date - 1, 10, 2),
-       (current_date - 1, 11, 2),
        (current_date, 1, 2),
        (current_date, 2, 2),
-       (current_date, 3, 2),
-       (current_date, 4, 1),
-       (current_date, 5, 1),
-       (current_date, 6, 1),
-       (current_date, 7, 1),
-       (current_date, 8, 1),
-       (current_date, 9, 1),
-       (current_date, 10, 1),
-       (current_date, 11, 1);
+       (current_date, 3, 2);
 
 INSERT INTO menu_dish (dish_id, menu_id)
 VALUES (1, 1),
