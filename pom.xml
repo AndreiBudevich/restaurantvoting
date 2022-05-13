@@ -8,8 +8,8 @@
         <version>2.5.5</version>
         <relativePath/>
     </parent>
-    <groupId>ru.javaops</groupId>
-    <artifactId>RestaurantVoting</artifactId>
+    <groupId>by.restaurantvoting</groupId>
+    <artifactId>restaurant-voting</artifactId>
     <version>1.0</version>
 
     <name>Restaurant Voting Application</name>
@@ -120,6 +120,14 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <argLine>-Dfile.encoding=UTF-8</argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
                 </configuration>
             </plugin>
         </plugins>
