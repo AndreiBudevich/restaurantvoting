@@ -18,7 +18,9 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true, exclude = {"restaurant", "menus"})
-@Table(name = "dish", uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "name"}, name = "restaurant_id_dish_name_idx")})
+@Table(name = "dish", uniqueConstraints =
+        {@UniqueConstraint(columnNames = {"restaurant_id", "name", "description", "weight"},
+                name = "restaurant_id_dish_name_description_weight_idx")})
 public class Dish extends NamedEntity {
 
     @Column(name = "description", nullable = false)
@@ -34,7 +36,7 @@ public class Dish extends NamedEntity {
 
     @Column(name = "price", nullable = false)
     @NotNull
-    @Range(min = 1, max = 5000)
+    @Range(min = 1, max = 1000000)
     private int price;
 
     @ManyToOne(fetch = FetchType.LAZY)

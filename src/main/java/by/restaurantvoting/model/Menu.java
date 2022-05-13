@@ -33,6 +33,11 @@ public class Menu extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "dish_id"))
     private Set<Dish> dishes;
 
+    public Menu(Integer id, LocalDate menuDate) {
+        super(id);
+        this.menuDate = menuDate;
+    }
+
     public void setDish(Dish dish) {
         if (CollectionUtils.isEmpty(dishes)) {
             this.dishes = new HashSet<>();
@@ -40,10 +45,5 @@ public class Menu extends BaseEntity {
         } else {
             this.dishes.add(dish);
         }
-    }
-
-    public Menu(Integer id, LocalDate menuDate) {
-        super(id);
-        this.menuDate = menuDate;
     }
 }

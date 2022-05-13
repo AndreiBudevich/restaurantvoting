@@ -141,7 +141,8 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     @Transactional(propagation = Propagation.NEVER)
     void updateDuplicate() throws Exception {
-        Dish updated = new Dish(DISH_ID_1, "Мачанка с драниками", "Updated description", 300, 800);
+        Dish updated = new Dish(DISH_ID_1, "Мачанка с драниками", "драники, куриное филе, ветчина, " +
+                "морковь, лук, шампиньоны, сливочный соус с укропом", 290, 800);
         perform(MockMvcRequestBuilders.put(REST_URL + DISH_ID_1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(updated)))
@@ -153,7 +154,8 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void createDuplicate() throws Exception {
-        Dish expected = new Dish(null, "Мачанка с драниками", "новое описание", 5, 2000);
+        Dish expected = new Dish(null, "Мачанка с драниками", "драники, куриное филе, ветчина, " +
+                "морковь, лук, шампиньоны, сливочный соус с укропом", 290, 2000);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(expected)))
@@ -165,7 +167,8 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void admissibleCreateDuplicate() throws Exception {
-        Dish expected = new Dish(null, "Мачанка с драниками", "новое описание", 5, 2000);
+        Dish expected = new Dish(null, "Мачанка с драниками", "драники, куриное филе, ветчина, " +
+                "морковь, лук, шампиньоны, сливочный соус с укропом", 290, 2000);
         perform(MockMvcRequestBuilders.post(AdminDishRestController.REST_URL.replace("{restaurantId}", "2") + '/')
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(expected)))
@@ -176,7 +179,8 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void admissibleUpdateDuplicate() throws Exception {
-        Dish updated = new Dish(DISH_ID_6, "Мачанка с драниками", "Updated description", 300, 800);
+        Dish updated = new Dish(DISH_ID_6, "Мачанка с драниками", "драники, куриное филе, ветчина, " +
+                "морковь, лук, шампиньоны, сливочный соус с укропом", 290, 2000);
         perform(MockMvcRequestBuilders.put(AdminDishRestController.REST_URL.replace("{restaurantId}", "2") + '/' + DISH_ID_6)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(updated)))
