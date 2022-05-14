@@ -11,12 +11,12 @@ import static by.restaurantvoting.testdata.UserTestDate.USER0_MAIL;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WithUserDetails(value = USER0_MAIL)
 class UserRestaurantRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = UserRestaurantRestController.REST_URL + '/';
 
     @Test
-    @WithUserDetails(value = USER0_MAIL)
     void getAll() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk())

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static by.restaurantvoting.testdata.DishTestData.*;
@@ -16,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WithUserDetails(value = USER0_MAIL)
 class UserMenuRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = UserMenuRestController.REST_URL.replace("{restaurantId}", "1") + '/';
@@ -24,8 +24,6 @@ class UserMenuRestControllerTest extends AbstractControllerTest {
     MenuRepository menuRepository;
 
     @Test
-    @WithUserDetails(value = USER0_MAIL)
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     void get() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT0_MENU_ID_0))
                 .andExpect(status().isOk())
@@ -35,7 +33,6 @@ class UserMenuRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = USER0_MAIL)
     void getNotFound() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + NOT_FOUND))
                 .andDo(print())

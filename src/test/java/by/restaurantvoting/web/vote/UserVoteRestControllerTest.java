@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WithUserDetails(value = USER0_MAIL)
 public class UserVoteRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = UserVoteRestController.REST_URL + '/';
@@ -35,7 +36,6 @@ public class UserVoteRestControllerTest extends AbstractControllerTest {
     VoteRepository voteRepository;
 
     @Test
-    @WithUserDetails(value = USER0_MAIL)
     void getAll() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk())
@@ -44,7 +44,6 @@ public class UserVoteRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = USER0_MAIL)
     void getTodayByUserId() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + "/today"))
                 .andExpect(status().isOk())
@@ -70,7 +69,6 @@ public class UserVoteRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = USER0_MAIL)
     void createAgain() throws Exception {
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .param("restaurantId", "2"))
@@ -80,7 +78,6 @@ public class UserVoteRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = USER0_MAIL)
     void updateVote() throws Exception {
         RESTAURANT_MATCHER.assertMatch(restaurant1, voteRepository.getByDateUserId(USER0_ID, getToday()).getRestaurant());
         try (MockedStatic<DateTimeUtil> mockedStatic = mockStatic(DateTimeUtil.class)) {
@@ -97,7 +94,6 @@ public class UserVoteRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = USER0_MAIL)
     void updateVoteAfterDeadLineTime() throws Exception {
         RESTAURANT_MATCHER.assertMatch(restaurant1, voteRepository.getByDateUserId(USER0_ID, getToday()).getRestaurant());
         try (MockedStatic<DateTimeUtil> mockedStatic = mockStatic(DateTimeUtil.class)) {
