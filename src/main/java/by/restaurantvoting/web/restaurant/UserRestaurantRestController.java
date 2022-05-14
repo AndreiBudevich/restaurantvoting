@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,7 @@ import static by.restaurantvoting.util.DateTimeUtil.getToday;
 @AllArgsConstructor
 @Slf4j
 @RequestMapping(value = UserRestaurantRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@CacheConfig(cacheNames = "restaurants")
 @Tag(name = "Rest user controller by restaurants", description = "Allows the user to get the available operations on the restaurant")
 public class UserRestaurantRestController {
 
@@ -27,8 +30,10 @@ public class UserRestaurantRestController {
     private final RestaurantRepository restaurantRepository;
 
     @GetMapping
+    @Cacheable
     @Operation(summary = "get all restaurants", description = "Allows you to get all a restaurants")
     public List<Restaurant> getAll() {
+        log.info("getAll restaurants");
         return restaurantRepository.getAllWithMenu(getToday());
     }
 }

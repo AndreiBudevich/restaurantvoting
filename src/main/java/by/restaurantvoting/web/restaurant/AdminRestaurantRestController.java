@@ -51,8 +51,8 @@ public class AdminRestaurantRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "delete restaurant", description = "Allows you to delete a restaurant by its id")
     public void delete(@PathVariable int id) {
-        log.info("delete restaurant {}", id);
         restaurantRepository.deleteExisted(id);
+        log.info("delete restaurant {}", id);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -60,8 +60,8 @@ public class AdminRestaurantRestController {
     @Operation(summary = "update restaurant", description = "Allows you to update a restaurant by its id")
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
         assureIdConsistent(restaurant, id);
-        log.info("update restaurant {}", id);
         restaurantRepository.save(restaurant);
+        log.info("update restaurant {}", id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

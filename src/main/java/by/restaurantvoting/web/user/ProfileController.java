@@ -1,5 +1,9 @@
 package by.restaurantvoting.web.user;
 
+import by.restaurantvoting.model.User;
+import by.restaurantvoting.to.UserTo;
+import by.restaurantvoting.util.UserUtil;
+import by.restaurantvoting.web.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -12,10 +16,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import by.restaurantvoting.model.User;
-import by.restaurantvoting.to.UserTo;
-import by.restaurantvoting.util.UserUtil;
-import by.restaurantvoting.web.AuthUser;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -49,9 +49,9 @@ public class ProfileController extends AbstractUserController {
     @CacheEvict(allEntries = true)
     @Operation(summary = "register profile", description = "Allows you to create your profile")
     public ResponseEntity<User> register(@Valid @RequestBody UserTo userTo) {
-        log.info("register {}", userTo);
         checkNew(userTo);
         User created = prepareAndSave(UserUtil.createNewFromTo(userTo));
+        log.info("register {}", userTo);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL).build().toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);

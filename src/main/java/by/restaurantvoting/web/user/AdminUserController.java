@@ -58,9 +58,9 @@ public class AdminUserController extends AbstractUserController {
     @CacheEvict(allEntries = true)
     @Operation(summary = "create user", description = "Allows you to create a user")
     public ResponseEntity<User> createWithLocation(@Valid @RequestBody User user) {
-        log.info("create {}", user);
         checkNew(user);
         User created = prepareAndSave(user);
+        log.info("create {}", user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -72,9 +72,9 @@ public class AdminUserController extends AbstractUserController {
     @CacheEvict(allEntries = true)
     @Operation(summary = "update user", description = "Allows you to update a user by its id")
     public void update(@Valid @RequestBody User user, @PathVariable int id) {
-        log.info("update {} with id={}", user, id);
         assureIdConsistent(user, id);
         prepareAndSave(user);
+        log.info("update {} with id={}", user, id);
     }
 
     @GetMapping("/by-email")
@@ -90,8 +90,8 @@ public class AdminUserController extends AbstractUserController {
     @CacheEvict(allEntries = true)
     @Operation(summary = "change the enable", description = "Allows you to change the enable property to active/inactive")
     public void enable(@PathVariable int id, @RequestParam boolean enabled) {
-        log.info(enabled ? "enable {}" : "disable {}", id);
         User user = repository.getById(id);
         user.setEnabled(enabled);
+        log.info(enabled ? "enable {}" : "disable {}", id);
     }
 }
