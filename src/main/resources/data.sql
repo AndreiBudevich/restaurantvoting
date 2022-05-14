@@ -41,7 +41,9 @@ VALUES (current_date - 1, 1),
        (current_date + 1, 1),
        (current_date + 2, 1),
        (current_date + 3, 1),
-       (current_date + 4, 1);
+       (current_date + 4, 1),
+       (current_date, 2),
+       (current_date, 3);
 
 INSERT INTO vote (vote_date, user_id, restaurant_id)
 VALUES (current_date - 1, 1, 1),
