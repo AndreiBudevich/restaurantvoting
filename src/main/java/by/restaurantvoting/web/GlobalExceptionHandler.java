@@ -32,6 +32,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String EXCEPTION_DUPLICATE_NAME_RESTAURANT = "ID_NAME_IDX";
     public static final String EXCEPTION_DUPLICATE_NAME_DISH = "RESTAURANT_ID_DISH_NAME_DESCRIPTION_WEIGHT_IDX";
     public static final String EXCEPTION_DUPLICATE_DATE_MENU = "MENU_DATE_RESTAURANT_ID_IDX_INDEX";
+    public static final String EXCEPTION_AGAIN_VOTE_DAY = "USER_ID_VOTE_DATE_IDX";
+    public static final String EXCEPTION_ALLOWED_MODIFICATION_TIME_HAS_EXPIRED = "ALLOWED_MODIFICATION_TIME_HAS_EXPIRED";
 
     private final ErrorAttributes errorAttributes;
 

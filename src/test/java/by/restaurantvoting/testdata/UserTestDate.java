@@ -19,6 +19,7 @@ public class UserTestDate {
     public static final int ADMIN_ID = USER3_ID + 1;
 
     public static final String USER0_MAIL = "user0@yandex.ru";
+    public static final String USER3_MAIL = "user3@yandex.ru";
     public static final String ADMIN_MAIL = "admin@gmail.com";
 
     public static final User user0 = new User(USER0_ID, "User0", USER0_MAIL, "password0", Role.USER);

@@ -30,7 +30,13 @@ public class Vote extends BaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    public Vote(LocalDate date, User user) {
+    public Vote(LocalDate voteDate, User user) {
+        this.voteDate = voteDate;
+        this.user = user;
+    }
+
+    public Vote(Integer id, LocalDate date, User user) {
+        super(id);
         this.voteDate = date;
         this.user = user;
     }
