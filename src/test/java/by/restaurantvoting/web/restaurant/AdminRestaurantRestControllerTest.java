@@ -15,9 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static by.restaurantvoting.testdata.RestaurantTestData.*;
 import static by.restaurantvoting.testdata.UserTestDate.ADMIN_MAIL;
 import static by.restaurantvoting.testdata.UserTestDate.USER0_MAIL;
-import static by.restaurantvoting.util.DateTimeUtil.getToday;
 import static by.restaurantvoting.util.JsonUtil.writeValue;
-import static by.restaurantvoting.util.RestaurantUtil.getTos;
 import static by.restaurantvoting.web.GlobalExceptionHandler.EXCEPTION_DUPLICATE_NAME_RESTAURANT;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -115,16 +113,6 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
         newRestaurant.setId(newId);
         RESTAURANT_MATCHER.assertMatch(created, newRestaurant);
         RESTAURANT_MATCHER.assertMatch(restaurantRepository.getById(newId), newRestaurant);
-    }
-
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void getAllWithVoting() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "/with-voting-on-date")
-                .param("date", getToday().minusDays(1).toString()))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_TO_MATCHER.contentJson(getTos(all)));
     }
 
     @Test

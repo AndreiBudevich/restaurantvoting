@@ -2,14 +2,11 @@ package by.restaurantvoting.web.restaurant;
 
 import by.restaurantvoting.model.Restaurant;
 import by.restaurantvoting.repository.RestaurantRepository;
-import by.restaurantvoting.to.RestaurantTo;
-import by.restaurantvoting.util.RestaurantUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +15,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.List;
 
 import static by.restaurantvoting.util.validation.ValidationUtil.assureIdConsistent;
@@ -42,13 +38,6 @@ public class AdminRestaurantRestController {
     public List<Restaurant> getAll() {
         log.info("getAll restaurants");
         return restaurantRepository.findAll(SORT_NAME);
-    }
-
-    @GetMapping("/with-voting-on-date")
-    @Operation(summary = "get all restaurants", description = "Allows you to get all restaurants with votes for a specific date")
-    public List<RestaurantTo> getAllRestaurantWithVoting(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        log.info("getAll restaurants with voting on date {}", date);
-        return RestaurantUtil.getTos(restaurantRepository.getAllWithVote(date));
     }
 
     @GetMapping("/{id}")
@@ -80,7 +69,7 @@ public class AdminRestaurantRestController {
     public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody Restaurant restaurant) {
         checkNew(restaurant);
         Restaurant created = restaurantRepository.save(restaurant);
-        log.info("create  restaurant {}", created);
+        log.info("create {}", created);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();

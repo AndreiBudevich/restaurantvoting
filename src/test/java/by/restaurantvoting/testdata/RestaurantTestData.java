@@ -2,7 +2,6 @@ package by.restaurantvoting.testdata;
 
 import by.restaurantvoting.MatcherFactory;
 import by.restaurantvoting.model.Restaurant;
-import by.restaurantvoting.to.RestaurantTo;
 
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.Set;
 public class RestaurantTestData {
 
     public static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class, "menus", "dishes", "votes");
-    public static final MatcherFactory.Matcher<RestaurantTo> RESTAURANT_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(RestaurantTo.class);
 
     public static final int RESTAURANT_ID_0 = 1;
     public static final int RESTAURANT_ID_1 = RESTAURANT_ID_0 + 1;
