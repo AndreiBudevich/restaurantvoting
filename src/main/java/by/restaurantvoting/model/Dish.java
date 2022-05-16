@@ -2,6 +2,8 @@ package by.restaurantvoting.model;
 
 import by.restaurantvoting.View;
 import by.restaurantvoting.util.validation.NoHtml;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -43,12 +45,15 @@ public class Dish extends NamedEntity {
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull(groups = View.Persist.class)
+    @JsonBackReference
+    @Schema(hidden = true)
     private Restaurant restaurant;
 
     @ManyToMany
     @JoinTable(name = "menu_dish",
             joinColumns = @JoinColumn(name = "dish_id"),
             inverseJoinColumns = @JoinColumn(name = "menu_id"))
+    @Schema(hidden = true)
     private Set<Menu> menus;
 
     public Dish(Integer id, String name, String description, int weight, int price) {
