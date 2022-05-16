@@ -1,14 +1,13 @@
 package by.restaurantvoting.web.user;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import by.restaurantvoting.model.User;
 import by.restaurantvoting.repository.UserRepository;
 import by.restaurantvoting.util.UserUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 
 @Slf4j
 public abstract class AbstractUserController {
@@ -29,7 +28,6 @@ public abstract class AbstractUserController {
         return ResponseEntity.of(repository.findById(id));
     }
 
-    @CacheEvict(value = "users", allEntries = true)
     public void delete(int id) {
         log.info("delete {}", id);
         repository.deleteExisted(id);

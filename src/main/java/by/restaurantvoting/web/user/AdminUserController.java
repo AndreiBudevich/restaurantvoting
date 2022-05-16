@@ -4,9 +4,6 @@ import by.restaurantvoting.model.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,7 +22,6 @@ import static by.restaurantvoting.util.validation.ValidationUtil.checkNew;
 @RestController
 @RequestMapping(value = AdminUserController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
-@CacheConfig(cacheNames = "users")
 @Tag(name = "Rest admin controller by user", description = "Allows the administrator to manage the users")
 public class AdminUserController extends AbstractUserController {
 
@@ -47,7 +43,6 @@ public class AdminUserController extends AbstractUserController {
     }
 
     @GetMapping
-    @Cacheable
     @Operation(summary = "get all users", description = "Allows you to get all a users")
     public List<User> getAll() {
         log.info("getAll");
@@ -55,7 +50,6 @@ public class AdminUserController extends AbstractUserController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @CacheEvict(allEntries = true)
     @Operation(summary = "create user", description = "Allows you to create a user")
     public ResponseEntity<User> createWithLocation(@Valid @RequestBody User user) {
         checkNew(user);
@@ -69,7 +63,6 @@ public class AdminUserController extends AbstractUserController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @CacheEvict(allEntries = true)
     @Operation(summary = "update user", description = "Allows you to update a user by its id")
     public void update(@Valid @RequestBody User user, @PathVariable int id) {
         assureIdConsistent(user, id);
@@ -87,7 +80,6 @@ public class AdminUserController extends AbstractUserController {
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
-    @CacheEvict(allEntries = true)
     @Operation(summary = "change the enable", description = "Allows you to change the enable property to active/inactive")
     public void enable(@PathVariable int id, @RequestParam boolean enabled) {
         User user = repository.getById(id);
