@@ -73,8 +73,7 @@ public class AdminDishRestController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         log.info("get all dishes with-markers for restaurant {} by menu {}", restaurantId, menuId);
-        return new ResponseEntity<>(getTos(dishRepository.getAllDishesByRestaurantId(restaurantId),
-                menuRepository.getWithDishes(menuId).orElseThrow()), HttpStatus.OK);
+        return new ResponseEntity<>(getTos(dishRepository.getAllDishesByRestaurantId(restaurantId), menu), HttpStatus.OK);
     }
 
     @PatchMapping(value = "/with-markers/{id}")
@@ -82,9 +81,9 @@ public class AdminDishRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "add/delete dish in menu", description = "Allows you to add a dish to the menu or remove it " +
             "if this dish is in the current menu")
-    public void setOrDeleteDishInCurrentMenu(
+    public void setOrDeleteDishInMenu(
             @PathVariable int restaurantId, @PathVariable int id, @RequestParam int menuId) {
-        Menu menu = menuRepository.getWithDishes(menuId).orElseThrow();
+        Menu menu = menuRepository.getWithDishes(menuId).orElse(null);
         Dish dish = dishRepository.getById(id);
         if (menu.getDishes().contains(dish)) {
             menu.getDishes().remove(dish);
