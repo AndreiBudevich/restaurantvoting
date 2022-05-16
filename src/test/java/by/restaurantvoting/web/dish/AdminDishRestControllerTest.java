@@ -3,9 +3,12 @@ package by.restaurantvoting.web.dish;
 import by.restaurantvoting.AbstractControllerTest;
 import by.restaurantvoting.model.Dish;
 import by.restaurantvoting.repository.DishRepository;
+import by.restaurantvoting.repository.MenuRepository;
+import by.restaurantvoting.testdata.DishTestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -13,16 +16,20 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static by.restaurantvoting.testdata.DishTestData.*;
+import static by.restaurantvoting.testdata.MenuTestData.RESTAURANT0_MENU_ID_0;
+import static by.restaurantvoting.testdata.MenuTestData.RESTAURANT0_MENU_ID_4;
 import static by.restaurantvoting.testdata.UserTestDate.ADMIN_MAIL;
 import static by.restaurantvoting.testdata.UserTestDate.USER0_MAIL;
 import static by.restaurantvoting.util.JsonUtil.writeValue;
 import static by.restaurantvoting.web.GlobalExceptionHandler.EXCEPTION_DUPLICATE_NAME_DISH;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WithUserDetails(value = ADMIN_MAIL)
 class AdminDishRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = AdminDishRestController.REST_URL.replace("{restaurantId}", "1") + '/';
@@ -30,8 +37,10 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     @Autowired
     DishRepository dishRepository;
 
+    @Autowired
+    MenuRepository menuRepository;
+
     @Test
-    @WithUserDetails(value = ADMIN_MAIL)
     void get() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + DISH_ID_0))
                 .andExpect(status().isOk())
@@ -41,7 +50,6 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = ADMIN_MAIL)
     void getNotFound() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + NOT_FOUND))
                 .andDo(print())
@@ -49,6 +57,7 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithAnonymousUser
     void getUnauth() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + DISH_ID_0))
                 .andExpect(status().isUnauthorized());
@@ -63,7 +72,6 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = ADMIN_MAIL)
     void getAll() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk())
@@ -72,24 +80,6 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + DISH_ID_5))
-                .andDo(print())
-                .andExpect(status().isNoContent());
-        assertFalse(dishRepository.findById(DISH_ID_5).isPresent());
-    }
-
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void deleteNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + NOT_FOUND))
-                .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
-    }
-
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
     void update() throws Exception {
         Dish updated = getUpdated();
         perform(MockMvcRequestBuilders.put(REST_URL + DISH_ID_0)
@@ -101,9 +91,8 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = ADMIN_MAIL)
     void createWithLocation() throws Exception {
-        Dish newDish = getNew();
+        Dish newDish = DishTestData.getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(newDish)))
@@ -116,7 +105,6 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = ADMIN_MAIL)
     void createInvalid() throws Exception {
         Dish invalid = new Dish(null, "", "d", 3, 5005);
         perform(MockMvcRequestBuilders.post(REST_URL)
@@ -127,7 +115,6 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = ADMIN_MAIL)
     void updateInvalid() throws Exception {
         Dish invalid = new Dish(1, null, null, 3, 5005);
         perform(MockMvcRequestBuilders.put(REST_URL + DISH_ID_0)
@@ -138,7 +125,6 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = ADMIN_MAIL)
     @Transactional(propagation = Propagation.NEVER)
     void updateDuplicate() throws Exception {
         Dish updated = new Dish(DISH_ID_1, "Мачанка с драниками", "драники, куриное филе, ветчина, " +
@@ -152,7 +138,6 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = ADMIN_MAIL)
     void createDuplicate() throws Exception {
         Dish expected = new Dish(null, "Мачанка с драниками", "драники, куриное филе, ветчина, " +
                 "морковь, лук, шампиньоны, сливочный соус с укропом", 290, 2000);
@@ -165,7 +150,6 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = ADMIN_MAIL)
     void admissibleCreateDuplicate() throws Exception {
         Dish expected = new Dish(null, "Мачанка с драниками", "драники, куриное филе, ветчина, " +
                 "морковь, лук, шампиньоны, сливочный соус с укропом", 290, 2000);
@@ -177,7 +161,6 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = ADMIN_MAIL)
     void admissibleUpdateDuplicate() throws Exception {
         Dish updated = new Dish(DISH_ID_6, "Мачанка с драниками", "драники, куриное филе, ветчина, " +
                 "морковь, лук, шампиньоны, сливочный соус с укропом", 290, 2000);
@@ -189,7 +172,6 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = ADMIN_MAIL)
     void updateHtmlUnsafe() throws Exception {
         Dish invalid = new Dish(1, "<script>alert(123)</script>", "<script>alert(123)</script>", 3, 5005);
         perform(MockMvcRequestBuilders.put(REST_URL + DISH_ID_0)
@@ -197,6 +179,26 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
                 .content(writeValue(invalid)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    void addDishInMenu() throws Exception {
+        perform(MockMvcRequestBuilders.patch(REST_URL + "with-markers/" + DISH_ID_0)
+                .param("menuId", "5"))
+                .andExpect(status().isNoContent())
+                .andDo(print());
+        assertTrue(menuRepository.getWithDishes(RESTAURANT0_MENU_ID_4).orElseThrow().getDishes().contains(dish0));
+    }
+
+    @Test
+    void deleteDishInMenu() throws Exception {
+        assertTrue(menuRepository.getWithDishes(RESTAURANT0_MENU_ID_0).orElseThrow().getDishes().contains(dish0));
+        perform(MockMvcRequestBuilders.patch(REST_URL + "with-markers/" + DISH_ID_0)
+                .param("menuId", "1"))
+                .andExpect(status().isNoContent())
+                .andDo(print());
+        assertFalse(menuRepository.getWithDishes(RESTAURANT0_MENU_ID_0).orElseThrow().getDishes().contains(dish0));
     }
 }
 

@@ -15,7 +15,7 @@ public final class DishUtil {
     public static List<DishTo> getTos(List<Dish> dishes, Menu menu) {
         return dishes.stream()
                 .map(dish -> createTo(dish, menu))
-                .sorted(Comparator.comparing(NamedTo::getName))
+                .sorted(Comparator.comparing(DishTo::isCurrentMenu).reversed().thenComparing(NamedTo::getName))
                 .toList();
     }
 
