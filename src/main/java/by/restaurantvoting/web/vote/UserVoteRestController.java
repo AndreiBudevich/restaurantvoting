@@ -49,10 +49,10 @@ public class UserVoteRestController {
     @GetMapping("/today")
     @Operation(summary = "get today vote by user id", description = "Allows you get today vote by user id"
     )
-    public Vote getTodayByUserId(@AuthenticationPrincipal AuthUser authUser) {
+    public ResponseEntity<Vote> getTodayByUserId(@AuthenticationPrincipal AuthUser authUser) {
         int userId = authUser.id();
         log.info("get today vote for user {}", userId);
-        return voteRepository.getByDateUserId(userId, getToday()).orElseThrow();
+        return ResponseEntity.of(voteRepository.getByDateUserId(userId, getToday()));
     }
 
     @PostMapping

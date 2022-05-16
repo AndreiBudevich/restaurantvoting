@@ -54,6 +54,14 @@ public class UserVoteRestControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = USER3_MAIL)
+    void getNotFound() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + "/today"))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithUserDetails(value = USER3_MAIL)
     void createWithLocation() throws Exception {
         Vote newVote = VoteTestData.getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
