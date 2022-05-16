@@ -4,35 +4,29 @@ import by.restaurantvoting.AbstractControllerTest;
 import by.restaurantvoting.model.Menu;
 import by.restaurantvoting.repository.MenuRepository;
 import by.restaurantvoting.testdata.MenuTestData;
-import by.restaurantvoting.util.DateTimeUtil;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.Set;
 
 import static by.restaurantvoting.testdata.DishTestData.*;
 import static by.restaurantvoting.testdata.MenuTestData.*;
 import static by.restaurantvoting.testdata.UserTestDate.ADMIN_MAIL;
 import static by.restaurantvoting.testdata.UserTestDate.USER0_MAIL;
-import static by.restaurantvoting.util.DishUtil.getTos;
 import static by.restaurantvoting.util.JsonUtil.writeValue;
 import static by.restaurantvoting.web.GlobalExceptionHandler.EXCEPTION_DUPLICATE_DATE_MENU;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mockStatic;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WithUserDetails(value = ADMIN_MAIL)
 class AdminMenuRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = AdminMenuRestController.REST_URL.replace("{restaurantId}", "1") + '/';
@@ -41,7 +35,6 @@ class AdminMenuRestControllerTest extends AbstractControllerTest {
     MenuRepository menuRepository;
 
     @Test
-    @WithUserDetails(value = ADMIN_MAIL)
     void getAll() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk())
@@ -51,23 +44,13 @@ class AdminMenuRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = ADMIN_MAIL)
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT0_MENU_ID_1))
+        restaurant0Menu0.setDishes(Set.of(dish2, dish0, dish3, dish1));
+        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT0_MENU_ID_0))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(DISH_MATCHER.contentJson(dish4, dish2, dish3));
-    }
-
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    void getToForEdit() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT0_MENU_ID_1 + "/edit"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(DISH_TO_MATCHER.contentJson(getTos(dishesByRestaurant0, menuRepository.getById(RESTAURANT0_MENU_ID_1))));
+                .andExpect(MENU_MATCHER.contentJson(restaurant0Menu0));
     }
 
     @Test
@@ -79,13 +62,13 @@ class AdminMenuRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithAnonymousUser
     void getUnauth() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT0_MENU_ID_1))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
-    @WithUserDetails(value = ADMIN_MAIL)
     void getNotFound() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + NOT_FOUND))
                 .andDo(print())
@@ -93,87 +76,6 @@ class AdminMenuRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    @Transactional(propagation = Propagation.NEVER)
-    void deleteMenuYesterday() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + RESTAURANT0_MENU_ID_0))
-                .andDo(print())
-                .andExpect(status().isNoContent());
-        assertFalse(menuRepository.findById(RESTAURANT0_MENU_ID_0).isPresent());
-    }
-
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    @Transactional(propagation = Propagation.NEVER)
-    void deleteNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + NOT_FOUND))
-                .andDo(print())
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    @Transactional(propagation = Propagation.NEVER)
-    void deleteMenuTodayAfterDeadlineDeleteTime() throws Exception {
-        try (MockedStatic<DateTimeUtil> mockedStatic = mockStatic(DateTimeUtil.class)) {
-            LocalTime fixedTime = LocalTime.of(8, 1);
-            mockedStatic.when(DateTimeUtil::getCurrentTime).thenReturn(fixedTime);
-            mockedStatic.when(DateTimeUtil::getToday).thenReturn(LocalDate.now());
-            perform(MockMvcRequestBuilders.delete(REST_URL + RESTAURANT0_MENU_ID_1))
-                    .andDo(print())
-                    .andExpect(status().isNoContent());
-            assertTrue(menuRepository.findById(RESTAURANT0_MENU_ID_1).isPresent());
-        }
-    }
-
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    @Transactional(propagation = Propagation.NEVER)
-    void deleteMenuTomorrow() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + RESTAURANT0_MENU_ID_2))
-                .andDo(print())
-                .andExpect(status().isNoContent());
-        assertFalse(menuRepository.findById(RESTAURANT0_MENU_ID_2).isPresent());
-    }
-
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    @Transactional(propagation = Propagation.NEVER)
-    void deleteMenuTodayBeforeDeadlineDeleteTime() throws Exception {
-        try (MockedStatic<DateTimeUtil> mockedStatic = mockStatic(DateTimeUtil.class)) {
-            LocalTime fixedTime = LocalTime.of(6, 0);
-            mockedStatic.when(DateTimeUtil::getCurrentTime).thenReturn(fixedTime);
-            mockedStatic.when(DateTimeUtil::getToday).thenReturn(LocalDate.now().plusDays(2));
-            perform(MockMvcRequestBuilders.delete(REST_URL + RESTAURANT0_MENU_ID_3))
-                    .andDo(print())
-                    .andExpect(status().isNoContent());
-            assertFalse(menuRepository.findById(RESTAURANT0_MENU_ID_3).isPresent());
-        }
-    }
-
-    @Test
-    @Transactional(propagation = Propagation.NEVER)
-    @WithUserDetails(value = ADMIN_MAIL)
-    void addDishInMenu() throws Exception {
-        perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT0_MENU_ID_4 + "/edit/" + DISH_ID_0))
-                .andExpect(status().isNoContent())
-                .andDo(print());
-        assertTrue(menuRepository.getWithDishes(RESTAURANT0_MENU_ID_4).getDishes().contains(dish0));
-    }
-
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
-    @Transactional(propagation = Propagation.NEVER)
-    void deleteDishInMenu() throws Exception {
-        assertTrue(menuRepository.getWithDishes(RESTAURANT0_MENU_ID_5).getDishes().contains(dish0));
-        perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT0_MENU_ID_5 + "/edit/" + DISH_ID_0))
-                .andExpect(status().isNoContent())
-                .andDo(print());
-        assertFalse(menuRepository.getWithDishes(RESTAURANT0_MENU_ID_5).getDishes().contains(dish0));
-    }
-
-    @Test
-    @WithUserDetails(value = ADMIN_MAIL)
     void createWithLocation() throws Exception {
         Menu newMenu = MenuTestData.getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
@@ -188,7 +90,6 @@ class AdminMenuRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = ADMIN_MAIL)
     void createDuplicate() throws Exception {
         Menu expected = new Menu(null, LocalDate.now());
         perform(MockMvcRequestBuilders.post(REST_URL)

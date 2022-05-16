@@ -8,8 +8,6 @@ import java.time.LocalTime;
 @UtilityClass
 public class DateTimeUtil {
 
-    public static final LocalTime DEADLINE_DELETE_TODAY_MENU = LocalTime.of(8, 0);
-
     public static final LocalTime DEADLINE_CHANGES_VOTE = LocalTime.of(11, 0);
 
     public static LocalTime getCurrentTime() {
