@@ -1,6 +1,8 @@
 package by.restaurantvoting.model;
 
 import by.restaurantvoting.util.validation.NoHtml;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,12 +32,17 @@ public class Restaurant extends NamedEntity {
     private String contacts;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    @JsonManagedReference
+    @Schema(hidden = true)
     private Set<Menu> menus;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    @JsonManagedReference
+    @Schema(hidden = true)
     private List<Dish> dishes;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    @Schema(hidden = true)
     private Set<Vote> votes;
 
     public Restaurant(Integer id, String name, String address, String contacts) {

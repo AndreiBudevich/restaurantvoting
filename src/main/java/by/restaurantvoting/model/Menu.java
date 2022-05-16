@@ -1,6 +1,8 @@
 package by.restaurantvoting.model;
 
 import by.restaurantvoting.View;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.util.CollectionUtils;
 
@@ -25,12 +27,15 @@ public class Menu extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @NotNull(groups = View.Persist.class)
+    @JsonBackReference
+    @Schema(hidden = true)
     private Restaurant restaurant;
 
     @ManyToMany
     @JoinTable(name = "menu_dish",
             joinColumns = @JoinColumn(name = "menu_id"),
             inverseJoinColumns = @JoinColumn(name = "dish_id"))
+    @Schema(hidden = true)
     private Set<Dish> dishes;
 
     public Menu(Integer id, LocalDate menuDate) {
