@@ -52,7 +52,7 @@ public class UserVoteRestController {
     public Vote getTodayByUserId(@AuthenticationPrincipal AuthUser authUser) {
         int userId = authUser.id();
         log.info("get today vote for user {}", userId);
-        return voteRepository.getByDateUserId(userId, getToday());
+        return voteRepository.getByDateUserId(userId, getToday()).orElseThrow();
     }
 
     @PostMapping

@@ -49,7 +49,7 @@ public class UserVoteRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(VOTE_MATCHER.contentJson(vote4));
-        RESTAURANT_MATCHER.assertMatch(restaurant1, voteRepository.getByDateUserId(USER0_ID, getToday()).getRestaurant());
+        RESTAURANT_MATCHER.assertMatch(restaurant1, voteRepository.getByDateUserId(USER0_ID, getToday()).orElseThrow().getRestaurant());
     }
 
     @Test
@@ -64,8 +64,8 @@ public class UserVoteRestControllerTest extends AbstractControllerTest {
         int newId = created.id();
         newVote.setId(newId);
         VOTE_MATCHER.assertMatch(created, newVote);
-        VOTE_MATCHER.assertMatch(voteRepository.getByDateUserId(USER3_ID, getToday()), newVote);
-        RESTAURANT_MATCHER.assertMatch(restaurant1, voteRepository.getByDateUserId(USER3_ID, getToday()).getRestaurant());
+        VOTE_MATCHER.assertMatch(voteRepository.getByDateUserId(USER3_ID, getToday()).orElseThrow(), newVote);
+        RESTAURANT_MATCHER.assertMatch(restaurant1, voteRepository.getByDateUserId(USER3_ID, getToday()).orElseThrow().getRestaurant());
     }
 
     @Test
@@ -79,7 +79,7 @@ public class UserVoteRestControllerTest extends AbstractControllerTest {
 
     @Test
     void updateVote() throws Exception {
-        RESTAURANT_MATCHER.assertMatch(restaurant1, voteRepository.getByDateUserId(USER0_ID, getToday()).getRestaurant());
+        RESTAURANT_MATCHER.assertMatch(restaurant1, voteRepository.getByDateUserId(USER0_ID, getToday()).orElseThrow().getRestaurant());
         try (MockedStatic<DateTimeUtil> mockedStatic = mockStatic(DateTimeUtil.class)) {
             LocalDate fixedDate = LocalDate.now();
             LocalTime fixedTime = LocalTime.of(8, 10);
@@ -89,13 +89,13 @@ public class UserVoteRestControllerTest extends AbstractControllerTest {
                     .param("restaurantId", "1"))
                     .andDo(print())
                     .andExpect(status().isOk());
-            RESTAURANT_MATCHER.assertMatch(restaurant0, voteRepository.getByDateUserId(USER0_ID, getToday()).getRestaurant());
+            RESTAURANT_MATCHER.assertMatch(restaurant0, voteRepository.getByDateUserId(USER0_ID, getToday()).orElseThrow().getRestaurant());
         }
     }
 
     @Test
     void updateVoteAfterDeadLineTime() throws Exception {
-        RESTAURANT_MATCHER.assertMatch(restaurant1, voteRepository.getByDateUserId(USER0_ID, getToday()).getRestaurant());
+        RESTAURANT_MATCHER.assertMatch(restaurant1, voteRepository.getByDateUserId(USER0_ID, getToday()).orElseThrow().getRestaurant());
         try (MockedStatic<DateTimeUtil> mockedStatic = mockStatic(DateTimeUtil.class)) {
             LocalDate fixedDate = LocalDate.now();
             LocalTime fixedTime = LocalTime.of(11, 0);
@@ -106,7 +106,7 @@ public class UserVoteRestControllerTest extends AbstractControllerTest {
                     .andDo(print())
                     .andExpect(status().isUnprocessableEntity())
                     .andExpect(content().string(containsString("ALLOWED_MODIFICATION_TIME_HAS_EXPIRED")));
-            RESTAURANT_MATCHER.assertMatch(restaurant1, voteRepository.getByDateUserId(USER0_ID, getToday()).getRestaurant());
+            RESTAURANT_MATCHER.assertMatch(restaurant1, voteRepository.getByDateUserId(USER0_ID, getToday()).orElseThrow().getRestaurant());
         }
     }
 }
