@@ -54,6 +54,13 @@ class AdminMenuRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void getNotOwn() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL.replace("1", "2") + RESTAURANT0_MENU_ID_0))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
     @WithUserDetails(value = USER0_MAIL)
     void getAllForbidden() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT0_MENU_ID_1))

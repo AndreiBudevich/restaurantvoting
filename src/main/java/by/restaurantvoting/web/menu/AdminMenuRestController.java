@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +35,12 @@ public class AdminMenuRestController {
     @GetMapping("/{id}")
     @Operation(summary = "get menu", description = "Allows you to get a restaurant menu by its id in the form of a list of dishes")
     public ResponseEntity<Menu> get(@PathVariable int restaurantId, @PathVariable int id) {
-        log.info("get menu {} for restaurant {}", id, restaurantId);
-        return ResponseEntity.of(menuRepository.getWithDishes(id));
+        Menu menu = menuRepository.getWithDishes(id).orElse(null);
+        if (menu != null && menu.getRestaurant().getId() == restaurantId) {
+            log.info("get menu {} for restaurant {}", id, restaurantId);
+            return new ResponseEntity<>(menu, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping

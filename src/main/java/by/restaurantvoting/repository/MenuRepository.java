@@ -14,7 +14,7 @@ public interface MenuRepository extends BaseRepository<Menu> {
     @Query("SELECT m FROM Menu m WHERE m.restaurant.id=?1 ORDER BY m.menuDate DESC")
     List<Menu> getAllMenusByRestaurantsId(int restaurantId);
 
-    @EntityGraph(attributePaths = {"dishes"}, type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = {"dishes", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m WHERE m.id=?1")
     Optional<Menu> getWithDishes(int id);
 }
