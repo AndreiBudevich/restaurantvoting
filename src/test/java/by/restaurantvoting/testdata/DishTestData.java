@@ -2,9 +2,6 @@ package by.restaurantvoting.testdata;
 
 import by.restaurantvoting.MatcherFactory;
 import by.restaurantvoting.model.Dish;
-import by.restaurantvoting.to.DishTo;
-
-import java.util.List;
 
 public class DishTestData {
 
@@ -17,7 +14,6 @@ public class DishTestData {
     public static final int DISH_ID_6 = DISH_ID_5 + 1;
 
     public static final MatcherFactory.Matcher<Dish> DISH_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Dish.class, "restaurant", "menus");
-    public static final MatcherFactory.Matcher<DishTo> DISH_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(DishTo.class);
 
     public static final Dish dish0 = new Dish(DISH_ID_0, "Мачанка с драниками",
             "драники, куриное филе, ветчина, морковь, лук, шампиньоны, сливочный соус с укропом",
@@ -36,8 +32,6 @@ public class DishTestData {
             335, 75);
     public static final Dish dish5 = new Dish(DISH_ID_5, "Еда не в меню", "без описания",
             290, 105);
-
-    public static List<Dish> dishesByRestaurant0 = List.of(dish0, dish1, dish2, dish3, dish4, dish5);
 
     public static Dish getNew() {
         return new Dish(null, "New", "New description", 200, 100);
