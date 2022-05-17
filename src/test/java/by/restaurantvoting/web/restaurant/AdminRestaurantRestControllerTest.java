@@ -132,7 +132,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @Transactional(propagation = Propagation.NEVER)
+    @Transactional(propagation = Propagation.SUPPORTS)
     void updateDuplicate() throws Exception {
         Restaurant updated = new Restaurant(1, "Пицца Темпо", "г. Минск ул. Багратиона 81", "8-029-5882922");
         perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT_ID_0)
@@ -144,7 +144,6 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @Transactional(propagation = Propagation.NEVER)
     void createDuplicate() throws Exception {
         Restaurant expected = new Restaurant(null, "Пицца Темпо", "г. Минск ул. Багратиона 81", "8-029-5882922");
         perform(MockMvcRequestBuilders.post(REST_URL)
