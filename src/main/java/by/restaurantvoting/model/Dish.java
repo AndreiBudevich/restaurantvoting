@@ -49,7 +49,7 @@ public class Dish extends NamedEntity {
     @Schema(hidden = true)
     private Restaurant restaurant;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "menu_dish",
             joinColumns = @JoinColumn(name = "dish_id"),
             inverseJoinColumns = @JoinColumn(name = "menu_id"))
