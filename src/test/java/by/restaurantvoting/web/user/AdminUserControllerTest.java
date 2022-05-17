@@ -12,8 +12,6 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import static by.restaurantvoting.testdata.UserTestDate.*;
 import static org.hamcrest.Matchers.containsString;
@@ -170,7 +168,6 @@ class AdminUserControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @Transactional(propagation = Propagation.NEVER)
     void updateDuplicate() throws Exception {
         User updated = new User(user0);
         updated.setEmail(ADMIN_MAIL);
@@ -183,7 +180,6 @@ class AdminUserControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @Transactional(propagation = Propagation.NEVER)
     void createDuplicate() throws Exception {
         User expected = new User(null, "New", USER0_MAIL, "newPass", Role.USER, Role.ADMIN);
         perform(MockMvcRequestBuilders.post(REST_URL)
