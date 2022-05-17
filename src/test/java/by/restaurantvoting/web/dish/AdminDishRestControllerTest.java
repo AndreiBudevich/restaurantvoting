@@ -125,7 +125,7 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @Transactional(propagation = Propagation.NEVER)
+    @Transactional(propagation = Propagation.SUPPORTS)
     void updateDuplicate() throws Exception {
         Dish updated = new Dish(DISH_ID_1, "Мачанка с драниками", "драники, куриное филе, ветчина, " +
                 "морковь, лук, шампиньоны, сливочный соус с укропом", 290, 800);
@@ -182,13 +182,14 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @Transactional(propagation = Propagation.NEVER)
     void addDishInMenu() throws Exception {
         perform(MockMvcRequestBuilders.patch(REST_URL + "with-markers/" + DISH_ID_0)
                 .param("menuId", "5"))
                 .andExpect(status().isNoContent())
                 .andDo(print());
-        assertTrue(menuRepository.getWithDishes(RESTAURANT0_MENU_ID_4).orElseThrow().getDishes().contains(dish0));
+        Dish expected = dishRepository.findById(DISH_ID_0).orElseThrow();
+        Dish actual = menuRepository.getWithDishes(RESTAURANT0_MENU_ID_4).orElseThrow().getDishes().stream().findFirst().orElseThrow();
+        DISH_MATCHER.assertMatch(actual, expected);
     }
 
     @Test
