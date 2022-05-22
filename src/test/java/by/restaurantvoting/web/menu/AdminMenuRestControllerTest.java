@@ -1,7 +1,9 @@
 package by.restaurantvoting.web.menu;
 
 import by.restaurantvoting.AbstractControllerTest;
+import by.restaurantvoting.model.Dish;
 import by.restaurantvoting.model.Menu;
+import by.restaurantvoting.repository.DishRepository;
 import by.restaurantvoting.repository.MenuRepository;
 import by.restaurantvoting.testdata.MenuTestData;
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,8 @@ import static by.restaurantvoting.testdata.UserTestDate.USER0_MAIL;
 import static by.restaurantvoting.util.JsonUtil.writeValue;
 import static by.restaurantvoting.web.GlobalExceptionHandler.EXCEPTION_DUPLICATE_DATE_MENU;
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,6 +37,7 @@ class AdminMenuRestControllerTest extends AbstractControllerTest {
 
     @Autowired
     MenuRepository menuRepository;
+    DishRepository dishRepository;
 
     @Test
     void getAll() throws Exception {
@@ -105,6 +110,27 @@ class AdminMenuRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_DATE_MENU)));
+    }
+
+    @Test
+    void addDishInMenu() throws Exception {
+        perform(MockMvcRequestBuilders.patch(REST_URL + DISH_ID_0)
+                .param("menuId", "5"))
+                .andExpect(status().isNoContent())
+                .andDo(print());
+        Dish expected = dishRepository.findById(DISH_ID_0).orElseThrow();
+        Dish actual = menuRepository.getWithDishes(RESTAURANT0_MENU_ID_4).orElseThrow().getDishes().stream().findFirst().orElseThrow();
+        DISH_MATCHER.assertMatch(actual, expected);
+    }
+
+    @Test
+    void deleteDishInMenu() throws Exception {
+        assertTrue(menuRepository.getWithDishes(RESTAURANT0_MENU_ID_0).orElseThrow().getDishes().contains(dish0));
+        perform(MockMvcRequestBuilders.patch(REST_URL + DISH_ID_0)
+                .param("menuId", "1"))
+                .andExpect(status().isNoContent())
+                .andDo(print());
+        assertFalse(menuRepository.getWithDishes(RESTAURANT0_MENU_ID_0).orElseThrow().getDishes().contains(dish0));
     }
 }
 

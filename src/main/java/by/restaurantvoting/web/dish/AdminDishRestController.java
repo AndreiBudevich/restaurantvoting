@@ -76,24 +76,6 @@ public class AdminDishRestController {
         return new ResponseEntity<>(getTos(dishRepository.getAllDishesByRestaurantId(restaurantId), menu), HttpStatus.OK);
     }
 
-    @PatchMapping(value = "/with-markers/{id}")
-    @Transactional
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Operation(summary = "add/delete dish in menu", description = "Allows you to add a dish to the menu or remove it " +
-            "if this dish is in the current menu")
-    public void setOrDeleteDishInMenu(
-            @PathVariable int restaurantId, @PathVariable int id, @RequestParam int menuId) {
-        Menu menu = menuRepository.getWithDishes(menuId).orElse(null);
-        Dish dish = dishRepository.getById(id);
-        if (menu.getDishes().contains(dish)) {
-            menu.getDishes().remove(dish);
-            log.info("remove {} dish from menu {} for restaurant {}", id, menuId, restaurantId);
-        } else {
-            menu.setDish(dish);
-            log.info("add {} dish to menu {} for restaurant {}", id, menuId, restaurantId);
-        }
-    }
-
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     @Operation(summary = "create dish", description = "Allows you to create a restaurant dish")

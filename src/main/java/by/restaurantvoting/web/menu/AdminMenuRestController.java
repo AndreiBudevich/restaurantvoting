@@ -1,7 +1,9 @@
 package by.restaurantvoting.web.menu;
 
+import by.restaurantvoting.model.Dish;
 import by.restaurantvoting.model.Menu;
 import by.restaurantvoting.model.Restaurant;
+import by.restaurantvoting.repository.DishRepository;
 import by.restaurantvoting.repository.MenuRepository;
 import by.restaurantvoting.repository.RestaurantRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -31,6 +34,7 @@ public class AdminMenuRestController {
 
     private final RestaurantRepository restaurantRepository;
     private final MenuRepository menuRepository;
+    private final DishRepository dishRepository;
 
     @GetMapping("/{id}")
     @Operation(summary = "get menu", description = "Allows you to get a restaurant menu by its id in the form of a list of dishes")
@@ -48,6 +52,24 @@ public class AdminMenuRestController {
     public List<Menu> getAllMenusByRestaurantsId(@PathVariable int restaurantId) {
         log.info("getAll menus for restaurant {}", restaurantId);
         return menuRepository.getAllMenusByRestaurantsId(restaurantId);
+    }
+
+    @PatchMapping(value = "/{id}")
+    @Transactional
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "add/delete dish in menu", description = "Allows you to add a dish to the menu or remove it " +
+            "if this dish is in the current menu")
+    public void setOrDeleteDish(
+            @PathVariable int restaurantId, @PathVariable int id, @RequestParam int menuId) {
+        Menu menu = menuRepository.getWithDishes(menuId).orElse(null);
+        Dish dish = dishRepository.getById(id);
+        if (menu.getDishes().contains(dish)) {
+            menu.getDishes().remove(dish);
+            log.info("remove {} dish from menu {} for restaurant {}", id, menuId, restaurantId);
+        } else {
+            menu.setDish(dish);
+            log.info("add {} dish to menu {} for restaurant {}", id, menuId, restaurantId);
+        }
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

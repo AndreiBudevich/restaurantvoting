@@ -16,15 +16,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static by.restaurantvoting.testdata.DishTestData.*;
-import static by.restaurantvoting.testdata.MenuTestData.RESTAURANT0_MENU_ID_0;
-import static by.restaurantvoting.testdata.MenuTestData.RESTAURANT0_MENU_ID_4;
 import static by.restaurantvoting.testdata.UserTestDate.ADMIN_MAIL;
 import static by.restaurantvoting.testdata.UserTestDate.USER0_MAIL;
 import static by.restaurantvoting.util.JsonUtil.writeValue;
 import static by.restaurantvoting.web.GlobalExceptionHandler.EXCEPTION_DUPLICATE_NAME_DISH;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -179,27 +175,6 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
                 .content(writeValue(invalid)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
-    }
-
-    @Test
-    void addDishInMenu() throws Exception {
-        perform(MockMvcRequestBuilders.patch(REST_URL + "with-markers/" + DISH_ID_0)
-                .param("menuId", "5"))
-                .andExpect(status().isNoContent())
-                .andDo(print());
-        Dish expected = dishRepository.findById(DISH_ID_0).orElseThrow();
-        Dish actual = menuRepository.getWithDishes(RESTAURANT0_MENU_ID_4).orElseThrow().getDishes().stream().findFirst().orElseThrow();
-        DISH_MATCHER.assertMatch(actual, expected);
-    }
-
-    @Test
-    void deleteDishInMenu() throws Exception {
-        assertTrue(menuRepository.getWithDishes(RESTAURANT0_MENU_ID_0).orElseThrow().getDishes().contains(dish0));
-        perform(MockMvcRequestBuilders.patch(REST_URL + "with-markers/" + DISH_ID_0)
-                .param("menuId", "1"))
-                .andExpect(status().isNoContent())
-                .andDo(print());
-        assertFalse(menuRepository.getWithDishes(RESTAURANT0_MENU_ID_0).orElseThrow().getDishes().contains(dish0));
     }
 }
 
