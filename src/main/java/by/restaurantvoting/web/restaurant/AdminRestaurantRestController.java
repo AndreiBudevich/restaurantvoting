@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +26,7 @@ import static by.restaurantvoting.util.validation.ValidationUtil.checkNew;
 @Slf4j
 @AllArgsConstructor
 @RequestMapping(value = AdminRestaurantRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@CacheConfig(cacheNames = "restaurants")
 @Tag(name = "Rest admin controller by restaurants", description = "Allows the administrator to manage restaurants")
 public class AdminRestaurantRestController {
 
@@ -49,6 +52,7 @@ public class AdminRestaurantRestController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(allEntries = true)
     @Operation(summary = "delete restaurant", description = "Allows you to delete a restaurant by its id")
     public void delete(@PathVariable int id) {
         restaurantRepository.deleteExisted(id);
@@ -57,6 +61,7 @@ public class AdminRestaurantRestController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(allEntries = true)
     @Operation(summary = "update restaurant", description = "Allows you to update a restaurant by its id")
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
         assureIdConsistent(restaurant, id);
@@ -65,6 +70,7 @@ public class AdminRestaurantRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @CacheEvict(allEntries = true)
     @Operation(summary = "create restaurant", description = "Allows you to create a restaurant")
     public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody Restaurant restaurant) {
         checkNew(restaurant);
