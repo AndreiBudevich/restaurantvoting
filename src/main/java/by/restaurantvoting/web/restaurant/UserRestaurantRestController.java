@@ -22,7 +22,7 @@ import static by.restaurantvoting.util.DateTimeUtil.getToday;
 @Slf4j
 @RequestMapping(value = UserRestaurantRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @CacheConfig(cacheNames = "restaurants")
-@Tag(name = "Rest user controller by restaurants", description = "Allows the user to get the available operations on the restaurant")
+@Tag(name = "Rest user restaurant controller", description = "Allows the user to get the available operations on the restaurant")
 public class UserRestaurantRestController {
 
     protected static final String REST_URL = "/api/user/restaurants";
