@@ -1,5 +1,6 @@
 package by.restaurantvoting.web.vote;
 
+import by.restaurantvoting.error.IllegalRequestDataException;
 import by.restaurantvoting.model.Restaurant;
 import by.restaurantvoting.model.Vote;
 import by.restaurantvoting.repository.RestaurantRepository;
@@ -10,7 +11,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -73,15 +73,14 @@ public class UserVoteRestController {
     @PutMapping(value = "/{id}")
     @Transactional
     @Operation(summary = "update vote", description = "Allows you to update the vote by its id")
-    public ResponseEntity<String> update(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id, @RequestParam int restaurantId) {
-        if (getCurrentTime().isBefore(DEADLINE_CHANGES_VOTE)) {
-            int userId = authUser.id();
-            Vote vote = voteRepository.getById(id);
-            Restaurant restaurant = restaurantRepository.getById(restaurantId);
-            vote.setRestaurant(restaurant);
-            log.info("update {} by user {} for the restaurant {}", vote.getId(), userId, restaurantId);
-            return new ResponseEntity<>("vote changed", HttpStatus.OK);
+    public void update(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id, @RequestParam int restaurantId) {
+        if (!getCurrentTime().isBefore(DEADLINE_CHANGES_VOTE)) {
+            throw new IllegalRequestDataException(EXCEPTION_ALLOWED_MODIFICATION_TIME_HAS_EXPIRED);
         }
-        return new ResponseEntity<>(EXCEPTION_ALLOWED_MODIFICATION_TIME_HAS_EXPIRED, HttpStatus.UNPROCESSABLE_ENTITY);
+        int userId = authUser.id();
+        Vote vote = voteRepository.getById(id);
+        Restaurant restaurant = restaurantRepository.getById(restaurantId);
+        vote.setRestaurant(restaurant);
+        log.info("update {} by user {} for the restaurant {}", vote.getId(), userId, restaurantId);
     }
 }
